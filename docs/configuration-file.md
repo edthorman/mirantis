@@ -64,7 +64,7 @@ Currently only `UCP` is supported.
 
 The specification for the cluster.
 
-## `hosts`
+### `hosts`
 
 Specify the machines for the cluster.
 
@@ -75,7 +75,7 @@ Specify the machines for the cluster.
 - `privateInterface` - Discover private network address from the configured network interface (optional)
 - `role` - One of `manager` or `worker`, specifies the role of the machine in the cluster
 
-## `ucp`
+### `ucp`
 
 Specify options for UCP cluster itself.
 
@@ -85,7 +85,7 @@ Specify options for UCP cluster itself.
 - `configFile` - The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/).
 - `configData` -  The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/) in embedded "heredocs" way.
 
-## `engine`
+### `engine`
  
  Specify options for Docker EE engine to be installed
 
