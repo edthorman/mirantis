@@ -81,18 +81,18 @@ Specify options for UCP cluster itself.
 
 - `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
 - `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
-- `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`.
-- `configFile` - The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/).
-- `configData` -  The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/) in embedded "heredocs" way.
+- `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
+- `configFile` - The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/). (optional)
+- `configData` -  The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/) in embedded "heredocs" way. (optional)
 
 ### `engine`
  
  Specify options for Docker EE engine to be installed
 
-- `version` - The version of Docker EE engine to be installed or upgraded to.
-- `channel` - Which installation channel to use. One of `test` or `prod`
-- `repoURL` - Which repository URL to use for engine installation. 
-- `installURL` - Where to download the initial installer script.
+- `version` - The version of Docker EE engine to be installed or upgraded to. (default `19.03.8`)
+- `channel` - Which installation channel to use. One of `test` or `prod` (optional)
+- `repoURL` - Which repository URL to use for engine installation. (optional)
+- `installURL` - Where to download the initial installer script. (optional)
 
 **Note:** Normally you should not need to specify anything else than the version for the engine. `repoUrl` and `installURL` are only usually used when installing from non-standard location, e.g. when running in disconnected datacenters.
 
