@@ -56,6 +56,10 @@ Currently only `launchpad.mirantis.com/v1beta1` is supported.
 
 Currently only `UCP` is supported.
 
+## `metadata`
+
+- `name` - Name of the cluster to be created. Affects only `launchpad` internal storage paths currently e.g. for client bundles.
+
 ## `spec`
 
 The specification for the cluster.
