@@ -82,4 +82,15 @@ The `launchpad` tool connects to the infrastructure you've specified in the `clu
 
 ## Interact with your cluster
 
-TBD
+At the end of the installation procedure, launchpad will show you the details you can use to connect to your cluster. You will see something like this:
+```
+INFO[0021] ==> Running phase: UCP cluster info 
+INFO[0021] Cluster is now configured. You can access your cluster admin UI at: https://jari-ucp-cluster-master-lb-895b79a08e60c67b.elb.eu-north-1.amazonaws.com 
+INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password> 
+```
+
+By default, the admin username is `admin`. If you did not supply the password with `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
+```
+INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0" 
+```
+
