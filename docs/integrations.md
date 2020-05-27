@@ -1,10 +1,10 @@
 # Integrating with Mirantis Launchpad
 
-Currently Mirantis Launchpad is distributed only as binary executable. Hence the main integration point with cluster management is the `launchpad apply` command and the input [`cluster.yaml`](configuration-file.md) configuration for the cluster. As the configuration is YAML format it should be pretty easy to integrate other tooling with it. One of the most common use cases is when using some infrastructure management tooling such as Terraform for example.
+Currently Mirantis Launchpad is distributed only as binary executable. Hence the main integration point with cluster management is the `launchpad apply` command and the input [`cluster.yaml`](configuration-file.md) configuration for the cluster. As the configuration is YAML format it should be pretty easy to integrate other tooling with it. One of the most common use cases is when using some infrastructure management tooling such as Terraform.
 
 ## Terraform with Mirantis Launchpad
 
-When using clooud environments many people are using [Terraform](https://www.terraform.io/) to manage the infrastructure declaratively. The easiest way to integrate Terraform to Mirantis Launchpad is to use [Terraform output](https://www.terraform.io/docs/configuration/outputs.html) values to actually specify the whole [`cluster.yaml`](configuration-file.md) structure. Something like so:
+When using cloud environments many people are using [Terraform](https://www.terraform.io/) to manage the infrastructure declaratively. The easiest way to integrate Terraform to Mirantis Launchpad is to use [Terraform output](https://www.terraform.io/docs/configuration/outputs.html) values to specify the whole [`cluster.yaml`](configuration-file.md) structure. For example:
 ```terraform
 output "ucp_cluster" {
   value = {
