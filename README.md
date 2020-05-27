@@ -9,6 +9,7 @@ Mirantis Launchpad CLI tool ("**launchpad**") is the new, better way to evaluate
 ## Documentation
 
 * [Getting Started](./docs/getting-started.md)
+* [Upgrading Cluster](./docs/upgrades.md)
 
 ## Support, Reporting Issues & Feedback
 
