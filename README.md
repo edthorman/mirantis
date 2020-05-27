@@ -1,6 +1,6 @@
 # Mirantis Launchpad
 
-> NOTE: Mirantis Launchpad is currently BETA. 
+> NOTE: Mirantis Launchpad is currently BETA.
 
 Mirantis Launchpad CLI tool ("**launchpad**") is the new, better way to evaluate and experience [Docker Enterprise](https://www.mirantis.com/software/docker/docker-enterprise/). It provides improved user experience for anyone interested in [getting started](./docs/getting-started.md) by simplifying and automating the complex installation process on public clouds, private clouds, bare metal or hybrid. In addition, it provides full cluster lifecycle management functionality through zero-downtime cluster upgrades (for high availability clusters).
 
@@ -9,7 +9,12 @@ Mirantis Launchpad CLI tool ("**launchpad**") is the new, better way to evaluate
 ## Documentation
 
 * [Getting Started](./docs/getting-started.md)
+* [System Requirements](./docs/system-requirements.md)
 * [Upgrading Cluster](./docs/upgrades.md)
+* [Manage Nodes](./docs/node-management.md)
+* [Integrations](./docs/integrations.md)
+* [Command Reference](./docs/configuration-file.md)
+* [Configuration File Reference](./docs/configuration-file.md)
 
 ## Support, Reporting Issues & Feedback
 
