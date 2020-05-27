@@ -64,6 +64,8 @@ scp ~/.ssh/id_rsa.pub Administrator@1.2.1.2:C:\Users\Administrator\.ssh\authoriz
 ssh --% Administrator@1.2.1.2 powershell -c $ConfirmPreference = 'None'; Repair-AuthorizedKeyPermission C:\Users\Administrator\.ssh\authorized_keys
 ```
 
+To read more how to manage Windows with OpenSSH, you can refer the official documentation: https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_overview
+
 ### Ports Used
 
 When installing an UCP cluster, a series of ports need to be opened to incoming traffic. See [UCP documentation](https://docs.docker.com/ee/ucp/admin/install/system-requirements/#ports-used) for more details.
