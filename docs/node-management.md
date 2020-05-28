@@ -22,10 +22,9 @@ Adding manager nodes is as simple as adding them into the `cluster.yaml`. Re-run
 
 Once you've determined that it is safe to remove a manager node, and its etcd peer, follow this process:
 
-1. Stop the node
-2. Update `cluster.yaml`
-3. Run `launchpad apply ...`
-4. Terminate/remove the node in your infrastructure
+1. Remove the manager host from `cluster.yaml`
+2. Run `launchpad apply --prune ...`
+3. Terminate/remove the node in your infrastructure
 
 ### Adding Worker Nodes
 
@@ -35,8 +34,8 @@ Adding worker nodes is as simple as adding them into the `cluster.yaml`. Re-runn
 
 Removing a worker node is currently a multi step process:
 
-1. Remove the host from `cluster.yaml`. As re-applying a cluster would not actually do anything, you do not need to run `launchpad apply ...`
-2. Move workloads away from the node with draining
+1. Remove the host from `cluster.yaml`.
+2. Run `launchpad apply --prune ...`
 3. Terminate/remove the node in your infrastructure
 
 
