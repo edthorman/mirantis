@@ -21,6 +21,8 @@ UCP clusters may be deployed, managed and maintained with the Mirantis Launchpad
 Download and install the latest version of `launchpad` for the OS you are using below:
 
 * [Download Launchpad](https://github.com/Mirantis/launchpad/releases/latest)
+* Rename the downloaded binary as `launchpad` and move it to some dir in PATH and give it an execute permission.
+* With OSX you have to also allow Launchpad to be executed in Security and Privacy settings.
 
 Once installed, verify the installation by checking the installed tool version:
 
@@ -84,13 +86,13 @@ The `launchpad` tool connects to the infrastructure you've specified in the `clu
 
 At the end of the installation procedure, launchpad will show you the details you can use to connect to your cluster. You will see something like this:
 ```
-INFO[0021] ==> Running phase: UCP cluster info 
-INFO[0021] Cluster is now configured. You can access your cluster admin UI at: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com 
-INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password> 
+INFO[0021] ==> Running phase: UCP cluster info
+INFO[0021] Cluster is now configured. You can access your cluster admin UI at: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com
+INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
 By default, the admin username is `admin`. If you did not supply the password with `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
 ```
-INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0" 
+INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
 
