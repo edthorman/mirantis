@@ -68,5 +68,5 @@ To read more how to manage Windows with OpenSSH, you can refer the official docu
 
 ### Ports Used
 
-When installing an UCP cluster, a series of ports need to be opened to incoming traffic. See [UCP documentation](https://docs.docker.com/ee/ucp/admin/install/system-requirements/#ports-used) for more details.
+When installing an UCP cluster, a series of ports need to be opened to incoming traffic. See [UCP documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/install-ucp.html#ports-used) for more details.
 

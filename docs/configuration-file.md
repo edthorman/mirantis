@@ -82,11 +82,11 @@ Specify options for UCP cluster itself.
 - `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
 - `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
 - `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
-- `configFile` - The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/). (optional)
-- `configData` -  The initial full cluster [configuration file](https://docs.docker.com/ee/ucp/admin/configure/ucp-configuration-file/) in embedded "heredocs" way. (optional)
+- `configFile` - The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html#configuration-options). (optional)
+- `configData` -  The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html#configuration-options) in embedded "heredocs" way. (optional)
 
 ### `engine`
- 
+
  Specify options for Docker EE engine to be installed
 
 - `version` - The version of Docker EE engine to be installed or upgraded to. (default `19.03.8`)
