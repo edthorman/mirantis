@@ -1,5 +1,9 @@
 # Mirantis Launchpad Command Reference
 
+## Initialize a cluster config file
+
+`launchpad init`
+
 ## Initialize or upgrade a cluster
 
 `launchpad apply`

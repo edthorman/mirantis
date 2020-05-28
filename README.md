@@ -13,7 +13,7 @@ Mirantis Launchpad CLI tool ("**launchpad**") is the new, better way to evaluate
 * [Upgrading Cluster](./docs/upgrades.md)
 * [Manage Nodes](./docs/node-management.md)
 * [Integrations](./docs/integrations.md)
-* [Command Reference](./docs/configuration-file.md)
+* [Command Reference](./docs/command-reference.md)
 * [Configuration File Reference](./docs/configuration-file.md)
 
 ## Support, Reporting Issues & Feedback
