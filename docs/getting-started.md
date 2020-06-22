@@ -44,6 +44,17 @@ email: luke@jedicorp.com
 
 In order to install UCP cluster, you'll need some machines. You can provision those machines from your favourite public cloud provider or use your private datacenter. Any machines with one of the [supported operating systems](system-requirements.md#supported-host-operating-systems-for-ucp-clusters) may be used. We recommend at minimum 2 machines.
 
+If you are familiar with [Terraform](https://www.terraform.io/), you can automate the infrastructure creation using our [best practise Terraform scripts](examples/terraform) on following environments:
+
+* [Amazon AWS](examples/terraform/aws)
+* Google GCP
+* [Hezner](examples/terraform/hetzner)
+* Microsoft Azure
+* OpenStack
+* VMware
+
+**Please note:** The Terraform scripts listed above are provided as best practise. If your environment will require tweaks, feel free to adjust accordingly.
+
 ## Create the cluster configuration file
 
 The cluster is configured using [a yaml file](configuration-file.md). In this example we setup simple 1+1 UCP Kubernetes cluster, one node acts as the UCP control plane and one as pure worker node.
