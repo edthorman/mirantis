@@ -1,3 +1,5 @@
+> NOTE: You are reading documentation for the 0.11 version, documentation for the latest version can be found in the [master](https://github.com/Mirantis/launchpad/tree/master) branch.
+
 # Mirantis Launchpad
 
 > NOTE: Mirantis Launchpad is currently BETA.
