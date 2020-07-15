@@ -156,7 +156,7 @@ spec:
     role: manager
     ssh:
       keyPath: ~/.ssh/my_key
-  - address: 172.16.33.100
+  - address: 172.16.33.101
     role: worker
     ssh:
       keyPath: ~/.ssh/my_key
