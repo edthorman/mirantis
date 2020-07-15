@@ -58,9 +58,9 @@ Hosts must be configured to allow:
   - Alternatively, Launchpad also supports SSH connections to Windows Server hosts. Enabling SSH on Windows Server will typically require post-launch configuration, and can be scripted for enablement at VM launch. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
-* _For hosts accessed via SSH: remote login using private key:_
-  - This is the default for Linux instances on most public and private cloud platforms. Typically, you'll need to use the platform to create an SSH keypair (or upload a private key), and assign this key to VMs at launch.
-  - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service. Google 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
+* _For hosts accessed via SSH: remote login using private key:_ &mdash; Launchpad, like most deployment tools, uses encryption keys rather than passwords to authenticate to hosts. You will need to create or use an existing keypair, copy the public key to an appropriate location on each host, configure SSH on hosts to permit keywise authentication (then restart the sshd server), and store the keypair (or just the private key) in an appropriate location on your deployer machine, with appropriate permissions. Google 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions on creating and using SSH keypairs.
+  - Keywise login is the default for Linux instances on most public and private cloud platforms. Typically, you can use the platform to create an SSH keypair (or upload a private key created elsewhere, e.g., on your deployer machine), and assign this key to VMs at launch.
+  - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service.
   - For Windows hosts, access via SSH and keys must be configured manually after first boot, or can be automated. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
@@ -76,15 +76,27 @@ Most first-time Launchpad users will likely install Launchpad on a local laptop 
 The simplest way to configure networking for a small, temporary evaluation cluster is to:
 
 1. Create a new virtual subnet (or VPC and subnet) for hosts.
-1. Create a new security group called 'de_hosts' that permits inbound traffic on all ports, either from a) the security group de_hosts, or b) the new virtual subnet only.
-1. Create a second new security group, called 'admit_me' that permits inbound traffic from your deployer machine's public IP address only (you can use the website [http://whatismyip.com](http://whatismyip.com)) to determine your public IP.
-1. When launching hosts:
-  - Attach them to the newly-created subnet
-  - Apply both new security groups
+1. Create a new security group called 'de_hosts' (or another name of your choice) that permits inbound IPv4 traffic on all ports, either from a) the security group de_hosts, or b) the new virtual subnet only.
+1. Create a second new security group (e.g., 'admit_me') that permits inbound IPv4 traffic from your deployer machine's public IP address only (you can use the website [http://whatismyip.com](http://whatismyip.com)) to determine your public IP.
+1. When launching hosts, attach them to the newly-created subnet, and apply both new security groups
+1. Once you know the (public, or VPN-accessible private) IPv4 addresses of your nodes, if you aren't using local DNS, it makes sense to assign names to your hosts (e.g., manager, worker1, worker2 ... etc.) and insert IP addresses and names in your hostfile, letting you (and Launchpad) refer to hosts by hostname instead of IP address.
 
-Once hosts are booted, you should be able to SSH into them from your deployer machine with your private key.
+Once hosts are booted, you should be able to SSH into them from your deployer machine with your private key, e.g.:
 
-A more-secure way to do this is to connect your laptop to your VPC/subnet using a VPN (in which case, you don't need the 'admit_me' security group, described above, but may need to adjust the de_hosts security group to accept all traffic from the VPN server). Most public clouds have a VPN service that can be used to set this up fairly simply.
+```
+ssh -i /my/private/keyfile username@mynode
+```
+... and determine if they can access the internet, perhaps by pinging a Google nameserver:
+
+```
+ping 8.8.8.8
+```
+
+Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Docker Enterprise Universal Control Plane webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (e.g., Postman, curl, etc.).
+
+A more-secure way to manage networking is to connect your deployer machine to your VPC/subnet using a VPN, and modify the de_hosts security group to accept traffic on all ports from this source. Most public clouds have a VPN service that can be used to set this up fairly simply.
+
+#### Using a VPN
 
 If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. Please see [System Requirements: Ports Used](./docs/system-requirements.md#ports-used) for links to documentation.
 
