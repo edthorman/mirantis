@@ -6,6 +6,7 @@ Get started with Launchpad by following these steps:
 
 1. [Plan your deployment machine](#configure-a-deployment-machine)
 1. [Plan and configure your hosts](#plan-and-configure-your-hosts)
+1. [Host configuration checklist](#host-configuration-checklist)
 1. [Networking considerations](#networking-considerations)
 1. [Set up Mirantis Launchpad CLI tool](#set-up-mirantis-launchpad-cli-tool)
 1. [Create the cluster configuration file](#create-the-cluster-configuration-file)
@@ -41,7 +42,7 @@ Ultimately, Launchpad can deploy Docker Enterprise Manager and Worker nodes in a
 
 Your hosts must be able to communicate with one another (and potentially, with users in the outside world) on their IP addresses, using many ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations), below.
 
-#### Host configuration checklist
+### Host configuration checklist
 
 Hosts must be provisioned with:
 
@@ -53,19 +54,19 @@ Hosts must be configured to allow:
 * _Access via SSH (or WinRC for Windows hosts):_
   - Public and private cloud Linux images are usually configured to enable SSH access by default.
   - Public and private cloud Windows Server images are normally configured for WinRC by default, which Launchpad supports.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server <your chosen Linux>' for OS-specific tutorials and instructions.
+  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
   - Alternatively, Launchpad also supports SSH connections to Windows Server hosts. Enabling SSH on Windows Server will typically require post-launch configuration, and can be scripted for enablement at VM launch. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
 * _For hosts accessed via SSH: remote login using private key:_
   - This is the default for Linux instances on most public and private cloud platforms. Typically, you'll need to use the platform to create an SSH keypair (or upload a private key), and assign this key to VMs at launch.
-  - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service. Google 'enable SSH with keys <your chosen Linux>' for OS-specific tutorials and instructions.
+  - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service. Google 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
   - For Windows hosts, access via SSH and keys must be configured manually after first boot, or can be automated. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
 * _For Linux hosts: passwordless sudo_ &mdash; Most Linux operating systems now default to enabling login by a privileged user with sudo permissions, rather than by 'root.' This is safer than permitting direct login by root (which is also prevented by the default configuration of most SSH servers). Launchpad requires that the user be allowed to issue 'sudo' commands without being prompted to enter a password.
   - This is the default for Linux instances on most public and private cloud platforms. The username you create at VM launch will have passwordless sudo privileges.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will typically need to configure passwordless sudo after first boot of a newly-installed OS. Google 'configure passwordless sudo <your operating system>' for tutorials and instructions.
+  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will typically need to configure passwordless sudo after first boot of a newly-installed OS. Google 'configure passwordless sudo &lt;your chosen Linux&gt;' for tutorials and instructions.
   - On Windows hosts, the Administrator account is given all privileges by default, and Launchpad can escalate permissions at need without a password.
 
 ### Networking considerations
