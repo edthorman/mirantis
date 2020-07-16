@@ -46,7 +46,7 @@ Your hosts must be able to communicate with one another (and potentially, with u
 
 Hosts must be provisioned with:
 
-* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, with a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB.
+* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, with a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB. Note that, for long-term evaluation, you should provision hosts with a minimum of 64GB mass storage so that log rotation can occur, preventing running out of disk space. [WE NEED A BETTER ANSWER HERE]
 * _A supported operating system_ &mdash; Docker Enterprise Manager nodes run on a supported Linux (see [system requirements](system-requirements.md)). Worker nodes may, alternatively, run on Windows Server 2019. Note that if you intend to deploy on desktop virtualization (e.g., VirtualBox), you will need to download a supported Linux server OS as an ISO file, mount it to boot from a virtual DVD drive, and install the operating system onto the VM SSD at first launch.
 
 Hosts must be configured to allow:
