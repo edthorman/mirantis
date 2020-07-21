@@ -69,6 +69,34 @@ Hosts must be configured to allow:
   - If installing Linux on a desktop (e.g., VirtualBox) VM, you will typically need to configure passwordless sudo after first boot of a newly-installed OS. Google 'configure passwordless sudo &lt;your chosen Linux&gt;' for tutorials and instructions.
   - On Windows hosts, the Administrator account is given all privileges by default, and Launchpad can escalate permissions at need without a password.
 
+* _Configure Docker logging to enable auto-rotation and manage retention_ * &mdash; Additionally, we recommend configuring evaluation hosts, especially those with smaller SSDs/HDDs, to enable basic Docker log rotation and managing old-file retention, thus avoiding filling up cluster storage with retained logs.
+
+This can be done by ssh'ing to each host, and then:
+
+```
+$ sudo su -
+```
+
+... to become root, then creating the directory /etc/docker:
+
+```
+$ mkdir /etc/docker
+```
+
+... and, within that directory, using vi or another editor to create the file daemon.json, as shown:
+
+```
+// daemon.json
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+```
+It's easiest to create this file before using Launchpad to install Docker Enterprise.
+
 ### Networking considerations
 
 Most first-time Launchpad users will likely install Launchpad on a local laptop or VM, and wish to deploy Docker Enterprise onto VMs running on a public or private cloud that supports 'security groups' for IP access control. This makes it fairly simple to configure networking in a way that provides adequate security and convenient access to the cluster for evaluation and experimentation.
