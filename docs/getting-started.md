@@ -1,13 +1,13 @@
-# Getting Started With Mirantis Launchpad
+# Getting Started With Mirantis Launchpad CLI Tool
 
-Mirantis Launchpad is a command-line deployment/lifecycle-management tool that runs on virtually any Linux, Mac, or Windows machine. It can deploy, modify, and update Docker Enterprise on two or more hosts that meet minimum [system requirements](system-requirements.md).
+Mirantis Launchpad CLI Tool is a command-line deployment/lifecycle-management tool that runs on virtually any Linux, Mac, or Windows machine. It can deploy, modify, and update Docker Enterprise on two or more hosts that meet minimum [system requirements](system-requirements.md).
 
 Get started with Launchpad by following these steps:
 
 1. [Plan your deployment machine](#configure-a-deployment-machine)
 1. [Plan and configure your hosts](#plan-and-configure-your-hosts)
-1. [Host configuration checklist](#host-configuration-checklist)
-1. [Networking considerations](#networking-considerations)
+1. [Follow the host configuration checklist](#host-configuration-checklist)
+1. [Ensure networking considerations have been satisifed](#networking-considerations)
 1. [Set up Mirantis Launchpad CLI tool](#set-up-mirantis-launchpad-cli-tool)
 1. [Create the cluster configuration file](#create-the-cluster-configuration-file)
 1. [Bootstrap your cluster](#bootstrap-your-cluster)
@@ -25,9 +25,9 @@ To fully evaluate Docker Enterprise, we recommend installing Launchpad on a Linu
 * curl, [Postman](https://www.postman.com/) and/or [client libraries](https://kubernetes.io/docs/reference/using-api/client-libraries/) for accessing the Kubernetes REST API
 * [Docker](https://docs.docker.com/get-docker/) and related tools, for using the 'docker swarm' CLI, and for containerizing workloads and accessing local and remote registries
 
-This machine can reside in different contexts and connect with hosts several different ways, depending on the infrastructure and services at your disposal.  
+This machine can reside in different contexts from the hosts and connect with them several different ways, depending on the infrastructure and services at your disposal.  
 
-Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations), below.
+Your deployer machine must be able to communicate with your hosts on their IP addresses using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations), below.
 
 ### Plan and configure your hosts
 
@@ -46,7 +46,7 @@ Your hosts must be able to communicate with one another (and potentially, with u
 
 Hosts must be provisioned with:
 
-* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, with a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB. Note that, for long-term evaluation, you should provision hosts with a minimum of 64GB mass storage so that log rotation can occur, preventing running out of disk space. [WE NEED A BETTER ANSWER HERE]
+* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, and a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB. Note that, for long-term evaluation, you should provision hosts with a minimum of 64GB mass storage so that log rotation can occur, preventing running out of disk space. [WE NEED A BETTER ANSWER HERE]
 * _A supported operating system_ &mdash; Docker Enterprise Manager nodes run on a supported Linux (see [system requirements](system-requirements.md)). Worker nodes may, alternatively, run on Windows Server 2019. Note that if you intend to deploy on desktop virtualization (e.g., VirtualBox), you will need to download a supported Linux server OS as an ISO file, mount it to boot from a virtual DVD drive, and install the operating system onto the VM SSD at first launch.
 
 Hosts must be configured to allow:
@@ -54,20 +54,20 @@ Hosts must be configured to allow:
 * _Access via SSH (or WinRC for Windows hosts):_
   - Public and private cloud Linux images are usually configured to enable SSH access by default.
   - Public and private cloud Windows Server images are normally configured for WinRC by default, which Launchpad supports.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
+  - If installing Linux on a desktop VM (such as VirtualBox), you will need to install and enable the SSH server (for example, OpenSSH) as part of initial OS installation. You can also access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually later. Search the web for 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
   - Alternatively, Launchpad also supports SSH connections to Windows Server hosts. Enabling SSH on Windows Server will typically require post-launch configuration, and can be scripted for enablement at VM launch. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
-* _For hosts accessed via SSH: remote login using private key:_ &mdash; Launchpad, like most deployment tools, uses encryption keys rather than passwords to authenticate to hosts. You will need to create or use an existing keypair, copy the public key to an appropriate location on each host, configure SSH on hosts to permit keywise authentication (then restart the sshd server), and store the keypair (or just the private key) in an appropriate location on your deployer machine, with appropriate permissions. Google 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions on creating and using SSH keypairs.
-  - Keywise login is the default for Linux instances on most public and private cloud platforms. Typically, you can use the platform to create an SSH keypair (or upload a private key created elsewhere, e.g., on your deployer machine), and assign this key to VMs at launch.
+* _For hosts accessed via SSH: remote login using private key:_ &mdash; Launchpad, like most deployment tools, uses encryption keys rather than passwords to authenticate to hosts. You will need to create or use an existing keypair, copy the public key to an appropriate location on each host, configure SSH on hosts to permit keywise authentication (then restart the sshd server), and store the keypair (or just the private key) in an appropriate location on your deployer machine, with appropriate permissions. Search the web for 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions on creating and using SSH keypairs.
+  - Keywise login is the default for Linux instances on most public and private cloud platforms. Typically, you can use the platform to create an SSH keypair (or upload a private key created elsewhere, such as on your deployer machine), and assign this key to VMs at launch.
   - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service.
   - For Windows hosts, access via SSH and keys must be configured manually after first boot, or can be automated. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
 
 * _For Linux hosts: passwordless sudo_ &mdash; Most Linux operating systems now default to enabling login by a privileged user with sudo permissions, rather than by 'root.' This is safer than permitting direct login by root (which is also prevented by the default configuration of most SSH servers). Launchpad requires that the user be allowed to issue 'sudo' commands without being prompted to enter a password.
   - This is the default for Linux instances on most public and private cloud platforms. The username you create at VM launch will have passwordless sudo privileges.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will typically need to configure passwordless sudo after first boot of a newly-installed OS. Google 'configure passwordless sudo &lt;your chosen Linux&gt;' for tutorials and instructions.
-  - On Windows hosts, the Administrator account is given all privileges by default, and Launchpad can escalate permissions at need without a password.
+  - If installing Linux on a desktop VM (such as VirtualBox), you will typically need to configure passwordless sudo after the first boot of a newly-installed OS. Search the web for 'configure passwordless sudo &lt;your chosen Linux&gt;' for tutorials and instructions.
+  - On Windows hosts, the Administrator account is given all privileges by default, and Launchpad can escalate permissions as needed without a password.
 
 * _Configure Docker logging to enable auto-rotation and manage retention_ * &mdash; Additionally, we recommend configuring evaluation hosts, especially those with smaller SSDs/HDDs, to enable basic Docker log rotation and managing old-file retention, thus avoiding filling up cluster storage with retained logs.
 
@@ -104,23 +104,23 @@ Most first-time Launchpad users will likely install Launchpad on a local laptop 
 The simplest way to configure networking for a small, temporary evaluation cluster is to:
 
 1. Create a new virtual subnet (or VPC and subnet) for hosts.
-1. Create a new security group called 'de_hosts' (or another name of your choice) that permits inbound IPv4 traffic on all ports, either from a) the security group de_hosts, or b) the new virtual subnet only.
-1. Create a second new security group (e.g., 'admit_me') that permits inbound IPv4 traffic from your deployer machine's public IP address only (you can use the website [http://whatismyip.com](http://whatismyip.com)) to determine your public IP.
+1. Create a new security group called 'de_hosts' (or another name of your choice) that permits inbound IPv4 traffic on all ports, either from a) the security group 'de_hosts', or b) the new virtual subnet only.
+1. Create a second new security group (for example, 'admit_me') that permits inbound IPv4 traffic from your deployer machine's public IP address only (you can use the website [http://whatismyip.com](http://whatismyip.com)) to determine your public IP.
 1. When launching hosts, attach them to the newly-created subnet, and apply both new security groups
-1. Once you know the (public, or VPN-accessible private) IPv4 addresses of your nodes, if you aren't using local DNS, it makes sense to assign names to your hosts (e.g., manager, worker1, worker2 ... etc.) and insert IP addresses and names in your hostfile, letting you (and Launchpad) refer to hosts by hostname instead of IP address.
+1. Once you know the (public or VPN-accessible private) IPv4 addresses of your nodes, if you aren't using local DNS, it makes sense to assign names to your hosts (for example, manager, worker1, worker2 ... and so on) and insert IP addresses and names in your hostfile, letting you (and Launchpad) refer to hosts by hostname instead of IP address.
 
-Once hosts are booted, you should be able to SSH into them from your deployer machine with your private key, e.g.:
+Once hosts are booted, you should be able to SSH into them from your deployer machine with your private key. For example:
 
 ```
 ssh -i /my/private/keyfile username@mynode
 ```
-... and determine if they can access the internet, perhaps by pinging a Google nameserver:
+Determine if they can access the internet, perhaps by pinging a Google nameserver:
 
 ```
 ping 8.8.8.8
 ```
 
-Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Docker Enterprise Universal Control Plane webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (e.g., Postman, curl, etc.).
+Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Docker Enterprise Universal Control Plane webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (such as Postman, curl, and so on).
 
 #### Using a VPN
 
@@ -132,7 +132,7 @@ If you intend to deploy a cluster for longer-term evaluation, it makes sense to 
 
 #### Using DNS
 
-Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See DOCUMENTATION LINK for more information.
+Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These certificates can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See DOCUMENTATION LINK for more information.
 
 ## Set up Mirantis Launchpad CLI tool
 
@@ -144,7 +144,7 @@ Download and install the latest version of `launchpad` for the OS you are using 
 
 * [Download Launchpad](https://github.com/Mirantis/launchpad/releases/latest)
 * Rename the downloaded binary as `launchpad` and move it to some dir in PATH and give it an execute permission.
-* With OSX you have to also allow Launchpad to be executed in Security and Privacy settings.
+* With OSX you may also have to also allow Launchpad to be executed in the Security and Privacy settings.
 
 Once installed, verify the installation by checking the installed tool version:
 
@@ -160,13 +160,15 @@ $ launchpad register
 name: Luke Skywalker
 company: Jedi Corp
 email: luke@jedicorp.com
+I agree to Mirantis Launchpad Software Evaluation License Agreement https://github.com/Mirantis/launchpad/blob/master/LICENSE [Y/n]: Yes
+INFO[0022] Registration completed!                    
 ```
 
 ## Create the cluster configuration file
 
-The cluster is configured using [a yaml file](configuration-file.md). In this example we setup simple 1+1 UCP Kubernetes cluster, one node acts as the UCP control plane and one as pure worker node.
+The cluster is configured using [a yaml file](configuration-file.md). In this example we setup simple 1+1 UCP Kubernetes cluster, where one node acts as the UCP control plane and one as pure worker node.
 
-Open up your favourite editor, and type something similar as in the example below. Once done, save the file as `cluster.yaml`. Naturally you need to adjust the example below to match your infrastructure details. This model should work to deploy hosts on most public clouds.
+Open up your favourite editor, and type something similar to the example below. Once done, save the file as `cluster.yaml`. Naturally you need to adjust the example below to match your infrastructure details. This model should work to deploy hosts on most public clouds.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta2
@@ -190,7 +192,7 @@ spec:
       keyPath: ~/.ssh/my_key
 ```
 
-If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature).
+If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta2
@@ -228,7 +230,7 @@ Once the cluster configuration file is ready, we can fire up the cluster. In the
 $ launchpad apply
 ```
 
-The `launchpad` tool connects to the infrastructure you've specified in the `cluster.yaml` with SSH or WinRM connections and configures everything needed on the hosts. Within few minutes you should have your cluster up-and-running.
+The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you've specified in the `cluster.yaml` and configures everything needed on the hosts. Within few minutes you should have your cluster up and running.
 
 ## Interact with your cluster
 
@@ -239,7 +241,7 @@ INFO[0021] Cluster is now configured. You can access your cluster admin UI at: h
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
-By default, the admin username is `admin`. If you did not supply the password with `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
+By default, the admin username is `admin`. If you did not supply the password in with `cluster.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
