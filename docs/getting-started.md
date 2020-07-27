@@ -1,13 +1,13 @@
-# Getting Started With Mirantis Launchpad
+# Getting Started With Mirantis Launchpad CLI Tool
 
-Mirantis Launchpad is a command-line deployment/lifecycle-management tool that runs on virtually any Linux, Mac, or Windows machine. It can deploy, modify, and update Docker Enterprise on two or more hosts that meet minimum [system requirements](system-requirements.md).
+Mirantis Launchpad CLI Tool is a command-line deployment/lifecycle-management tool that runs on virtually any Linux, Mac, or Windows machine. It can deploy, modify, and update Docker Enterprise on two or more hosts that meet minimum [system requirements](system-requirements.md).
 
 Get started with Launchpad by following these steps:
 
 1. [Plan your deployment machine](#configure-a-deployment-machine)
 1. [Plan and configure your hosts](#plan-and-configure-your-hosts)
-1. [Host configuration checklist](#host-configuration-checklist)
-1. [Networking considerations](#networking-considerations)
+1. [Follow the host configuration checklist](#host-configuration-checklist)
+1. [Ensure networking considerations have been satisifed](#networking-considerations)
 1. [Set up Mirantis Launchpad CLI tool](#set-up-mirantis-launchpad-cli-tool)
 1. [Create the cluster configuration file](#create-the-cluster-configuration-file)
 1. [Bootstrap your cluster](#bootstrap-your-cluster)
@@ -25,7 +25,7 @@ To fully evaluate Docker Enterprise, we recommend installing Launchpad on a Linu
 * curl, [Postman](https://www.postman.com/) and/or [client libraries](https://kubernetes.io/docs/reference/using-api/client-libraries/) for accessing the Kubernetes REST API
 * [Docker](https://docs.docker.com/get-docker/) and related tools, for using the 'docker swarm' CLI, and for containerizing workloads and accessing local and remote registries
 
-This machine can reside in different contexts and connect with hosts several different ways, depending on the infrastructure and services at your disposal.  
+This machine can reside in different contexts from the hosts and connect with them several different ways, depending on the infrastructure and services at your disposal.  
 
 Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations) for more.
 
@@ -71,7 +71,7 @@ Download and install the latest version of `launchpad` for the OS you are using 
 
 * [Download Launchpad](https://github.com/Mirantis/launchpad/releases/latest)
 * Rename the downloaded binary as `launchpad` and move it to some dir in PATH and give it an execute permission.
-* With OSX you have to also allow Launchpad to be executed in Security and Privacy settings.
+* With OSX you may also have to also allow Launchpad to be executed in the Security and Privacy settings.
 
 Once installed, verify the installation by checking the installed tool version:
 
@@ -87,13 +87,15 @@ $ launchpad register
 name: Luke Skywalker
 company: Jedi Corp
 email: luke@jedicorp.com
+I agree to Mirantis Launchpad Software Evaluation License Agreement https://github.com/Mirantis/launchpad/blob/master/LICENSE [Y/n]: Yes
+INFO[0022] Registration completed!                    
 ```
 
 ## Create the cluster configuration file
 
-The cluster is configured using [a yaml file](configuration-file.md). In this example we setup simple 1+1 UCP Kubernetes cluster, one node acts as the UCP control plane and one as pure worker node.
+The cluster is configured using [a yaml file](configuration-file.md). In this example we setup simple 1+1 UCP Kubernetes cluster, where one node acts as the UCP control plane and one as pure worker node.
 
-Open up your favourite editor, and type something similar as in the example below. Once done, save the file as `cluster.yaml`. Naturally you need to adjust the example below to match your infrastructure details. This model should work to deploy hosts on most public clouds.
+Open up your favourite editor, and type something similar to the example below. Once done, save the file as `cluster.yaml`. Naturally you need to adjust the example below to match your infrastructure details. This model should work to deploy hosts on most public clouds.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta2
@@ -117,7 +119,7 @@ spec:
       keyPath: ~/.ssh/my_key
 ```
 
-If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature).
+If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta2
@@ -155,7 +157,7 @@ Once the cluster configuration file is ready, we can fire up the cluster. In the
 $ ./launchpad apply
 ```
 
-The `launchpad` tool connects to the infrastructure you've specified in the `cluster.yaml` with SSH or WinRM connections and configures everything needed on the hosts. Within few minutes you should have your cluster up-and-running.
+The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you've specified in the `cluster.yaml` and configures everything needed on the hosts. Within few minutes you should have your cluster up and running.
 
 ## Interact with your cluster
 
@@ -166,7 +168,7 @@ INFO[0021] Cluster is now configured. You can access your cluster admin UI at: h
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
-By default, the admin username is `admin`. If you did not supply the password with `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
+By default, the admin username is `admin`. If you did not supply the password in with `cluster.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
