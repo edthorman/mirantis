@@ -29,7 +29,7 @@ A more-secure way to manage networking is to connect your deployer machine to yo
 
 #### More deliberate network security
 
-If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. Please see [System Requirements: Ports Used](./docs/system-requirements.md#ports-used) for links to documentation.
+If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. Please see [System Requirements: Ports Used](system-requirements.md#ports-used) for links to documentation.
 
 #### Using DNS
 
