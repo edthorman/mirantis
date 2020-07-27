@@ -1,4 +1,4 @@
-### Host configuration checklist
+# Host configuration checklist
 
 Launchpad target hosts must be provisioned with:
 
