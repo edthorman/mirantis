@@ -40,7 +40,7 @@ Ultimately, Launchpad can deploy Docker Enterprise Manager and Worker nodes in a
 * _High-availability clusters_, with two, three, or more Manager nodes
 * _Clusters that Launchpad can auto-update, non-disruptively_, with multiple Managers (allowing one-by-one update of the control plane without loss of cluster cohesion) and sufficient Worker nodes of each type to let workloads be drained to new homes as each node is updated
 
-Your hosts must be able to communicate with one another (and potentially, with users in the outside world) on their IP addresses, using many ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations), below.
+Your hosts must be able to communicate with one another (and potentially, with users in the outside world) on their IP addresses, using many ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations.md).
 
 ### Host configuration checklist
 
@@ -60,6 +60,10 @@ Hosts must be configured to allow:
 Hosts launched on most public clouds (e.g., AWS, Azure) typically provide this access configuration as default.
 
 * _(Recommended) Configure Docker logging to enable auto-rotation and manage log retention_ * &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
+
+## Networking considerations
+
+Most first-time Launchpad users will likely install Launchpad on a local laptop or VM, and wish to deploy Docker Enterprise onto VMs running on a public or private cloud that supports 'security groups' for IP access control. This makes it fairly simple to configure networking in a way that provides adequate security and convenient access to the cluster for evaluation and experimentation. See [Networking Considerations](#networking-considerations.md) for a simple recommended setup.
 
 ## Set up Mirantis Launchpad CLI tool
 
