@@ -27,7 +27,7 @@ To fully evaluate Docker Enterprise, we recommend installing Launchpad on a Linu
 
 This machine can reside in different contexts and connect with hosts several different ways, depending on the infrastructure and services at your disposal.  
 
-Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations), below.
+Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](#networking-considerations) for more.
 
 ### Plan and configure your hosts
 
@@ -46,93 +46,20 @@ Your hosts must be able to communicate with one another (and potentially, with u
 
 Hosts must be provisioned with:
 
-* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, with a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB. Note that, for long-term evaluation, you should provision hosts with a minimum of 64GB mass storage so that log rotation can occur, preventing running out of disk space. [WE NEED A BETTER ANSWER HERE]
-* _A supported operating system_ &mdash; Docker Enterprise Manager nodes run on a supported Linux (see [system requirements](system-requirements.md)). Worker nodes may, alternatively, run on Windows Server 2019. Note that if you intend to deploy on desktop virtualization (e.g., VirtualBox), you will need to download a supported Linux server OS as an ISO file, mount it to boot from a virtual DVD drive, and install the operating system onto the VM SSD at first launch.
+* _Sufficient vCPU, RAM, and SSD storage_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for details. For a small evaluation cluster, Manager and Workers can be provisioned with 2 vCPUs, 8GB RAM, with a 20GB SSD. On AWS EC2, for example, these specifications are met by a t3.large instance type, with SSD storage expanded to 20GB from the default 10GB.
+* _A supported operating system_ &mdash; Docker Enterprise Manager nodes run on a supported Linux (see [system requirements](system-requirements.md)). Worker nodes may, alternatively, run on Windows Server 2019.
 
 Hosts must be configured to allow:
 
-* _Access via SSH (or WinRC for Windows hosts):_
-  - Public and private cloud Linux images are usually configured to enable SSH access by default.
-  - Public and private cloud Windows Server images are normally configured for WinRC by default, which Launchpad supports.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
-  - Alternatively, Launchpad also supports SSH connections to Windows Server hosts. Enabling SSH on Windows Server will typically require post-launch configuration, and can be scripted for enablement at VM launch. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
+* _Access via SSH (or WinRC for Windows hosts):_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
+* _For hosts accessed via SSH: remote login using private key:_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
-* _For hosts accessed via SSH: remote login using private key:_ &mdash; Launchpad, like most deployment tools, uses encryption keys rather than passwords to authenticate to hosts. You will need to create or use an existing keypair, copy the public key to an appropriate location on each host, configure SSH on hosts to permit keywise authentication (then restart the sshd server), and store the keypair (or just the private key) in an appropriate location on your deployer machine, with appropriate permissions. Google 'enable SSH with keys &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions on creating and using SSH keypairs.
-  - Keywise login is the default for Linux instances on most public and private cloud platforms. Typically, you can use the platform to create an SSH keypair (or upload a private key created elsewhere, e.g., on your deployer machine), and assign this key to VMs at launch.
-  - For Linux hosts on desktop virtualization, assuming you're installing a new OS on each VM, you'll need to configure keywise SSH access after installing OpenSSH. This entails creating a private key, copying it to each host, then reconfiguring SSH on each host to use private keys instead of passwords before restarting the sshd service.
-  - For Windows hosts, access via SSH and keys must be configured manually after first boot, or can be automated. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
+* _For Linux hosts: passwordless sudo_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
+Hosts launched on most public clouds (e.g., AWS, Azure) typically provide this access configuration as default.
 
-* _For Linux hosts: passwordless sudo_ &mdash; Most Linux operating systems now default to enabling login by a privileged user with sudo permissions, rather than by 'root.' This is safer than permitting direct login by root (which is also prevented by the default configuration of most SSH servers). Launchpad requires that the user be allowed to issue 'sudo' commands without being prompted to enter a password.
-  - This is the default for Linux instances on most public and private cloud platforms. The username you create at VM launch will have passwordless sudo privileges.
-  - If installing Linux on a desktop (e.g., VirtualBox) VM, you will typically need to configure passwordless sudo after first boot of a newly-installed OS. Google 'configure passwordless sudo &lt;your chosen Linux&gt;' for tutorials and instructions.
-  - On Windows hosts, the Administrator account is given all privileges by default, and Launchpad can escalate permissions at need without a password.
-
-* _Configure Docker logging to enable auto-rotation and manage retention_ * &mdash; Additionally, we recommend configuring evaluation hosts, especially those with smaller SSDs/HDDs, to enable basic Docker log rotation and managing old-file retention, thus avoiding filling up cluster storage with retained logs.
-
-This can be done by ssh'ing to each host, and then:
-
-```
-$ sudo su -
-```
-
-... to become root, then creating the directory /etc/docker:
-
-```
-$ mkdir /etc/docker
-```
-
-... and, within that directory, using vi or another editor to create the file daemon.json, as shown:
-
-```
-// daemon.json
-{
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "10m",
-    "max-file": "3"
-  }
-}
-```
-It's easiest to create this file before using Launchpad to install Docker Enterprise.
-
-### Networking considerations
-
-Most first-time Launchpad users will likely install Launchpad on a local laptop or VM, and wish to deploy Docker Enterprise onto VMs running on a public or private cloud that supports 'security groups' for IP access control. This makes it fairly simple to configure networking in a way that provides adequate security and convenient access to the cluster for evaluation and experimentation.
-
-The simplest way to configure networking for a small, temporary evaluation cluster is to:
-
-1. Create a new virtual subnet (or VPC and subnet) for hosts.
-1. Create a new security group called 'de_hosts' (or another name of your choice) that permits inbound IPv4 traffic on all ports, either from a) the security group de_hosts, or b) the new virtual subnet only.
-1. Create a second new security group (e.g., 'admit_me') that permits inbound IPv4 traffic from your deployer machine's public IP address only (you can use the website [http://whatismyip.com](http://whatismyip.com)) to determine your public IP.
-1. When launching hosts, attach them to the newly-created subnet, and apply both new security groups
-1. Once you know the (public, or VPN-accessible private) IPv4 addresses of your nodes, if you aren't using local DNS, it makes sense to assign names to your hosts (e.g., manager, worker1, worker2 ... etc.) and insert IP addresses and names in your hostfile, letting you (and Launchpad) refer to hosts by hostname instead of IP address.
-
-Once hosts are booted, you should be able to SSH into them from your deployer machine with your private key, e.g.:
-
-```
-ssh -i /my/private/keyfile username@mynode
-```
-... and determine if they can access the internet, perhaps by pinging a Google nameserver:
-
-```
-ping 8.8.8.8
-```
-
-Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Docker Enterprise Universal Control Plane webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (e.g., Postman, curl, etc.).
-
-#### Using a VPN
-
-A more-secure way to manage networking is to connect your deployer machine to your VPC/subnet using a VPN, and modify the de_hosts security group to accept traffic on all ports from this source. Most public clouds have a VPN service that can be used to set this up fairly simply.
-
-#### More deliberate network security
-
-If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. Please see [System Requirements: Ports Used](./docs/system-requirements.md#ports-used) for links to documentation.
-
-#### Using DNS
-
-Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See DOCUMENTATION LINK for more information.
+* _(Recommended) Configure Docker logging to enable auto-rotation and manage log retention_ * &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
 ## Set up Mirantis Launchpad CLI tool
 
@@ -225,7 +152,7 @@ For more complex setups, there's a huge amount of [configuration options](config
 Once the cluster configuration file is ready, we can fire up the cluster. In the same directory where you created the `cluster.yaml` file, run:
 
 ```
-$ launchpad apply
+$ ./launchpad apply
 ```
 
 The `launchpad` tool connects to the infrastructure you've specified in the `cluster.yaml` with SSH or WinRM connections and configures everything needed on the hosts. Within few minutes you should have your cluster up-and-running.
