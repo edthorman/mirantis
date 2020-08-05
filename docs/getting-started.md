@@ -75,7 +75,7 @@ Download and install the latest version of `launchpad` for the OS you are using 
 
 * [Download Launchpad](https://github.com/Mirantis/launchpad/releases/latest)
 * Rename the downloaded binary as `launchpad` and move it to some dir in PATH and give it an execute permission.
-* With OSX you may also have to also allow Launchpad to be executed in the Security and Privacy settings.
+* With macOS you may also have to also allow Launchpad to be executed in the Security and Privacy settings.
 
 Once installed, verify the installation by checking the installed tool version:
 
