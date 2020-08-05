@@ -7,7 +7,7 @@ Launchpad target hosts must be provisioned with:
 
 Hosts must be configured to allow:
 
-* _Access via SSH (or WinRC for Windows hosts):_
+* _Access via SSH (for Windows hosts you can also use WinRM):_
   - Public and private cloud Linux images are usually configured to enable SSH access by default.
   - Public and private cloud Windows Server images are normally configured for WinRC by default, which Launchpad supports.
   - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
