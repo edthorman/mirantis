@@ -9,7 +9,7 @@ Hosts must be configured to allow:
 
 * _Access via SSH (for Windows hosts you can also use WinRM):_
   - Public and private cloud Linux images are usually configured to enable SSH access by default.
-  - Public and private cloud Windows Server images are normally configured for WinRC by default, which Launchpad supports.
+  - Public and private cloud Windows Server images are normally configured for WinRM by default, which Launchpad supports.
   - If installing Linux on a desktop (e.g., VirtualBox) VM, you will need to install and enable the SSH server (e.g., OpenSSH) as part of initial OS installation, or access the running VM via the built-in remote terminal and install, configure, and enable OpenSSH manually, later. Google 'install ssh server &lt;your chosen Linux&gt;' for OS-specific tutorials and instructions.
   - Alternatively, Launchpad also supports SSH connections to Windows Server hosts. Enabling SSH on Windows Server will typically require post-launch configuration, and can be scripted for enablement at VM launch. See [system requirements](system-requirements.md) or [this blog](https://www.mirantis.com/blog/today-i-learned-how-to-enable-ssh-with-keypair-login-on-windows-server-2019/).
 
