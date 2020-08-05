@@ -172,7 +172,7 @@ INFO[0021] Cluster is now configured. You can access your cluster admin UI at: h
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
-By default, the admin username is `admin`. If you did not supply the password in with `cluster.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password is outputted in the install flow:
+By default, the admin username is `admin`. If you did not supply the password in with `cluster.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
