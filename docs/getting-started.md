@@ -51,7 +51,7 @@ Hosts must be provisioned with:
 
 Hosts must be configured to allow:
 
-* _Access via SSH (or WinRC for Windows hosts):_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
+* _Access via SSH (or WinRM for Windows hosts):_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
 * _For hosts accessed via SSH: remote login using private key:_ &mdash; See [system requirements](system-requirements.md) and [host configuration](host-configuration.md) for more info.
 
