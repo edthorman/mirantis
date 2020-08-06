@@ -20,9 +20,9 @@ spec:
 ```
 Once the file is ready, just re-run `launchpad apply` command. Launchpad will upgrade the engine instalation on all hosts in steps. First it will upgrade the engine on each manager node one-by-one, in multi-manager case only single manager gets "down" during the process. For worker nodes it will run the upgrade process for 10% of the nodes at time. So during the engine upgrade, 10% of the nodes might be "down" for a short while.
 
-## Upgrading UCP components
+## Upgrading UCP or DTR components
 
-When newer version of UCP is available you need to just bump the UCP version tag in the `cluster.yml`:
+When a newer version of UCP or DTR is available you need to just bump the associated version tag in the `cluster.yml`:
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta2
@@ -35,12 +35,14 @@ spec:
     role: manager
   ucp:
     version: 3.3.1
+  dtr:
+    version: 2.8.1
 ```
 
-Once the file is ready, just re-run `launchpad apply` command. Launchpad will connect to the nodes and discovers the current cluster state and will notice we need to upgrade UCP components. It will run the UCP upgrader and within few minutes your cluster will be upgraded to given version.
+Once the file is ready, just re-run `launchpad apply` command. Launchpad will connect to the nodes and discovers the current cluster state and will notice we need to upgrade components. It will run the required upgraders and within few minutes your cluster will be upgraded to the given version.
 
-**Note:** UCP components themselves only support upgrades for one minor (`y`in `x.y.z`) bumps in the upgrade so make sure you're not trying to hop too far at once.
+**Note:** Both UCP and DTR components only support upgrades for one minor (`y` in `x.y.z`) bumps in the upgrade so make sure you're not trying to hop too far at once.
 
-## Upgrading both Docker EE engine and UCP at the same time
+## Upgrading Docker EE engine, UCP and DTR at the same time
 
-It is possible to also upgrade both the engine and UCP compoents at the same `launchpad apply` run. Launchpad will first upgrade the engines on all the nodes as described above and only after that it will upgrade UCP components.
+It is possible to upgrade the engine, UCP and DTR components within the same `launchpad apply` run. Launchpad will first upgrade the engines on all the nodes as described above and only after that it will upgrade UCP components, then finally DTR components.
