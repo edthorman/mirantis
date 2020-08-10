@@ -46,15 +46,6 @@ spec:
       user: root
       port: 22
       keyPath: ~/.ssh/id_rsa
-    privateInterface: eth0
-    environment:
-      http_proxy: http://example.com
-      NO_PROXY: 10.0.0.*
-    engineConfig:
-      debug: true
-      log-opts:
-        max-size: 10m
-        max-file: "3"
   ucp:
     version: 3.3.0-rc4
     imageRepo: "docker.io/docker"
