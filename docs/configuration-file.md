@@ -7,7 +7,7 @@ Mirantis Launchpad cluster configuration is described in a file that is in YAML 
 The complete `cluster.yaml` reference for UCP clusters:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta2
+apiVersion: launchpad.mirantis.com/v1beta3
 kind: UCP
 metadata:
   name: launchpad-ucp
