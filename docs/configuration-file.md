@@ -92,7 +92,7 @@ Specify the machines for the cluster.
 - `ssh` - [SSH](#ssh) connection configuration options
 - `winRM` - [WinRM](#winrm) connection configuration options
 - `role` - One of `manager` or `worker`, specifies the role of the machine in the cluster
-- `environment` - Key - value pairs in YAML map (hash, dictionary) syntax. Values will be updated to host environment. (optional)
+- `environment` - Key - value pairs in YAML mapping syntax. Values will be updated to host environment. (optional)
 - `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json`. (optional)
 
 #### `ssh`
@@ -144,4 +144,3 @@ Cloud provider configuration.
 - `installURLWindows` - Where to download the initial installer script for windows hosts. Also local paths can be used. (default: `https://get.mirantis.com/install.ps1`)
 
 **Note:** Normally you should not need to specify anything else than the version for the engine. `repoUrl` and `installURLLinux/Windows` are only usually used when installing from non-standard location, e.g. when running in disconnected datacenters.
-
