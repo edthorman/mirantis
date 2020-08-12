@@ -7,7 +7,7 @@ Mirantis Launchpad cluster configuration is described in a file that is in YAML 
 The complete `cluster.yaml` reference for UCP clusters:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta2
+apiVersion: launchpad.mirantis.com/v1beta3
 kind: UCP
 metadata:
   name: launchpad-ucp
@@ -40,6 +40,12 @@ spec:
         certPath: ~/.certs/cert.pem
         keyPath: ~/.certs/key.pem
         password: abcd1234
+  - address: 10.0.0.3
+    role: dtr
+    ssh:
+      user: root
+      port: 22
+      keyPath: ~/.ssh/id_rsa
   ucp:
     version: 3.3.0-rc4
     imageRepo: "docker.io/docker"
@@ -56,6 +62,13 @@ spec:
       configData: |-
         [Global]
         region=RegionOne
+  dtr:
+    version: 2.8.1
+    imageRepo: "docker.io/docker"
+    installFlags:
+    - --dtr-external-url dtr.example.com
+    - --ucp-insecure-tls
+    replicaConfig: sequential
   engine:
     version: 19.03.8-rc1
     channel: test
@@ -131,6 +144,23 @@ Cloud provider configuration.
 - `provider` - Provider name (currently azure and openstack (UCP 3.4.0+) are supported)
 - `configFile` - Path to cloud provider configuration file on local machine
 - `configData` - Inlined cloud provider configuration
+
+### `dtr`
+
+Specify options for the DTR cluster itself.
+
+- `version` - Which version of DTR we should install or upgrade to (default `2.8.1`)
+- `imageRepo` - Which image repository we should use for DTR installation (default `docker.io/docker`)
+- `installFlags` - Custom installation flags for DTR installation.  You can get a list of supported installation options for a specific DTR version by running the installer container with `docker run -t -i --rm docker/dtr:2.8.1 install --help`. (optional)
+
+    **Note**: `launchpad` will inherit UCP flags which are needed by DTR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `dtr`:
+    - `--ucp-username` (inherited from UCP's `--admin-username` flag)
+    - `--ucp-password` (inherited from UCP's `--admin-password` flag)
+    - `--ucp-url` (inherited from UCP's `--san` flag or intelligently selected based on other configuration variables)
+
+- `replicaConfig` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)
+
+
  
 ### `engine`
 

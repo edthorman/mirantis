@@ -168,7 +168,8 @@ The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you
 At the end of the installation procedure, launchpad will show you the details you can use to connect to your cluster. You will see something like this:
 ```
 INFO[0021] ==> Running phase: UCP cluster info
-INFO[0021] Cluster is now configured. You can access your cluster admin UI at: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com
+INFO[0021] Cluster is now configured.  You can access your admin UIs at: 
+INFO[0021] UCP cluster admin UI: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
