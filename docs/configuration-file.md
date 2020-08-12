@@ -31,21 +31,22 @@ spec:
   - address: 10.0.0.2
     role: worker
     winRM:
-        user: Administrator
-        port: 5986
-        useHTTPS: true
-        insecure: false
-        useNTLM: false
-        caCertPath: ~/.certs/cacert.pem
-        certPath: ~/.certs/cert.pem
-        keyPath: ~/.certs/key.pem
-        password: abcd1234
+      user: Administrator
+      port: 5986
+      useHTTPS: true
+      insecure: false
+      useNTLM: false
+      caCertPath: ~/.certs/cacert.pem
+      certPath: ~/.certs/cert.pem
+      keyPath: ~/.certs/key.pem
+      password: abcd1234
   ucp:
-    version: 3.3.0-rc4
+    version: "3.3.0"
     imageRepo: "docker.io/docker"
     installFlags:
     - --admin-username=admin
     - --admin-password=orcaorcaorca
+    licenseFilePath: ./docker-enterprise.lic
     configFile: ./ucp-config.toml
     configData: |-
       [scheduling_configuration]
@@ -57,8 +58,8 @@ spec:
         [Global]
         region=RegionOne
   engine:
-    version: 19.03.8-rc1
-    channel: test
+    version: "19.03.8"
+    channel: stable
     repoURL: https://repos.mirantis.com
     installURLLinux: https://get.mirantis.com/
     installURLWindows: https://get.mirantis.com/install.ps1
@@ -68,7 +69,7 @@ We follow Kubernetes like versioning and grouping the launchpad configuration, h
 
 ## `apiVersion`
 
-Currently `launchpad.mirantis.com/v1beta1` and `launchpad.mirantis.com/v1beta2` are supported. A `v1beta1` configuration will still work unchanged, but `v1beta2` features such as `environment`, `engineConfig` and `winRM` can not be used with `v1beta2`.
+Currently `launchpad.mirantis.com/v1beta1` and `launchpad.mirantis.com/v1beta2` are supported. A `v1beta1` configuration will still work unchanged, but `v1beta2` features such as `environment`, `engineConfig` and `winRM` can not be used with `v1beta1`.
 
 ## `kind`
 
@@ -87,13 +88,12 @@ The specification for the cluster.
 Specify the machines for the cluster.
 
 - `address` - Address of the machine. This needs to be an address to which `launchpad` tool can connect to with SSH protocol.
-- `user` - Username with sudo/admin permission to use for logging in (default: `root`)
-- `environment` - Key - value pairs in YAML map (hash, dictionary) syntax. Values will be updated to host environment.
-- `ssh` - SSH connection configuration options
-- `winRM` - WinRM connection configuration options
-- `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json`.
-- `privateInterface` - Discover private network address from the configured network interface (optional)
+- `privateInterface` - Discover private network address from the configured network interface (default: `eth0`)
+- `ssh` - [SSH](#ssh) connection configuration options
+- `winRM` - [WinRM](#winrm) connection configuration options
 - `role` - One of `manager` or `worker`, specifies the role of the machine in the cluster
+- `environment` - Key - value pairs in YAML map (hash, dictionary) syntax. Values will be updated to host environment. (optional)
+- `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json`. (optional)
 
 #### `ssh`
 
@@ -103,15 +103,15 @@ Specify the machines for the cluster.
 
 #### `winRM`
 
+- `user` - Windows account username (default: `Administrator`)
+- `password` - User account password
 - `port` - Host's WinRM listening port (default: `5986`)
 - `useHTTPS` - Set `true` to use HTTPS protocol. When false, plain HTTP is used. (default: `false`)
 - `insecure` - Set `true` to ignore SSL certificate validation errors (default: `false`)
 - `useNTLM` - Set `true` to use NTLM (default: `false`)
-- `caCertPath` - Path to CA Certificate file
-- `certPath` - Path to Certificate file
-- `keyPath` - Path to Key file
-- `user` - Windows account username (default: `Administrator`)
-- `password` - User account password
+- `caCertPath` - Path to CA Certificate file (optional)
+- `certPath` - Path to Certificate file (optional)
+- `keyPath` - Path to Key file (optional)
 
 ### `ucp`
 
@@ -120,18 +120,19 @@ Specify options for UCP cluster itself.
 - `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
 - `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
 - `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
+- `licenseFilePath` - A path to Docker Enterprise license file. (optional)
 - `configFile` - The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html#configuration-options). (optional)
 - `configData` -  The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html#configuration-options) in embedded "heredocs" way. (optional)
 - `cloud` - Cloud provider configuration (optional)
 
 #### `cloud`
 
-Cloud provider configuration. 
+Cloud provider configuration.
 
-- `provider` - Provider name (currently azure and openstack (UCP 3.4.0+) are supported)
-- `configFile` - Path to cloud provider configuration file on local machine
-- `configData` - Inlined cloud provider configuration
- 
+- `provider` - Provider name (currently aws, azure and openstack (UCP 3.3.3+) are supported) (optional)
+- `configFile` - Path to cloud provider configuration file on local machine (optional)
+- `configData` - Inlined cloud provider configuration (optional)
+
 ### `engine`
 
  Specify options for Docker EE engine to be installed
