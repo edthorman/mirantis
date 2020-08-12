@@ -27,28 +27,23 @@ Hosts must be configured to allow:
 
 * _Configure Docker logging to enable auto-rotation and manage retention_ * &mdash; Additionally, we recommend configuring evaluation hosts, especially those with smaller SSDs/HDDs, to enable basic Docker log rotation and managing old-file retention, thus avoiding filling up cluster storage with retained logs.
 
-This can be done by ssh'ing to each host, and then:
+This can be done by setting Docker engine config to cluster.yaml, for example:
 
-```
-$ sudo su -
-```
+```yaml
+...
 
-... to become root, then creating the directory /etc/docker:
-
+spec:
+  hosts:
+  - address: 192.168.110.100
+    role: manager
+    ssh:
+      keyPath: ~/.ssh/id_rsa
+      user: theuser
+    privateInterface: enp0s3
+    engineConfig:
+      log-driver: json-file
+      log-opts:
+        max-size: "10m"
+        max-file: "3"
+...
 ```
-$ mkdir /etc/docker
-```
-
-... and, within that directory, using vi or another editor to create the file daemon.json, as shown:
-
-```
-// daemon.json
-{
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "10m",
-    "max-file": "3"
-  }
-}
-```
-It's easiest to create this file before using Launchpad to install Docker Enterprise.

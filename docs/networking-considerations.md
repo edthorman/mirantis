@@ -33,4 +33,4 @@ If you intend to deploy a cluster for longer-term evaluation, it makes sense to 
 
 #### Using DNS
 
-Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See DOCUMENTATION LINK for more information.
+Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See [UCP documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/add-sans-to-cluster-certs.html) for more information.

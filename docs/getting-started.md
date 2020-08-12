@@ -25,7 +25,7 @@ To fully evaluate Docker Enterprise, we recommend installing Launchpad on a Linu
 * curl, [Postman](https://www.postman.com/) and/or [client libraries](https://kubernetes.io/docs/reference/using-api/client-libraries/) for accessing the Kubernetes REST API
 * [Docker](https://docs.docker.com/get-docker/) and related tools, for using the 'docker swarm' CLI, and for containerizing workloads and accessing local and remote registries
 
-This machine can reside in different contexts from the hosts and connect with them several different ways, depending on the infrastructure and services at your disposal.  
+This machine can reside in different contexts from the hosts and connect with them several different ways, depending on the infrastructure and services at your disposal.
 
 Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](networking-considerations.md) for more.
 
@@ -92,7 +92,7 @@ name: Luke Skywalker
 company: Jedi Corp
 email: luke@jedicorp.com
 I agree to Mirantis Launchpad Software Evaluation License Agreement https://github.com/Mirantis/launchpad/blob/master/LICENSE [Y/n]: Yes
-INFO[0022] Registration completed!                    
+INFO[0022] Registration completed!
 ```
 
 ## Create the cluster configuration file
@@ -158,7 +158,7 @@ For more complex setups, there's a huge amount of [configuration options](config
 Once the cluster configuration file is ready, we can fire up the cluster. In the same directory where you created the `cluster.yaml` file, run:
 
 ```
-$ ./launchpad apply
+$ launchpad apply
 ```
 
 The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you've specified in the `cluster.yaml` and configures everything needed on the hosts. Within few minutes you should have your cluster up and running.
