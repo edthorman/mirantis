@@ -153,6 +153,8 @@ spec:
 ```
 For more complex setups, there's a huge amount of [configuration options](configuration-file.md) available.
 
+If you are familiar with [Terraform](https://www.terraform.io/), you can automate the infrastructure creation using our [Terraform examples](../examples/terraform/README.md) as a baseline.
+
 ## Bootstrap your cluster
 
 Once the cluster configuration file is ready, we can fire up the cluster. In the same directory where you created the `cluster.yaml` file, run:

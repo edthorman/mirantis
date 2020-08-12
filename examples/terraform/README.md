@@ -4,3 +4,6 @@ We've prepared couple working examples for using Terraform with Mirantis Launchp
 
 * [AWS](aws/README.md), a complete infrastructure setup with VPC, LB, security groups etc.
 * [Hetzner](hetzner/README.md), a simple example with just couple VMs provisioned for UCP cluster.
+* [VMware](vmware/README.md), a simple example with existing vSphere network.
+
+**Please note:** The Terraform scripts listed above are provided as best practise. If your environment will require tweaks, feel free to adjust accordingly.
