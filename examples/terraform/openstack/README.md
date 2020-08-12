@@ -4,7 +4,7 @@ This directory provides an example flow with Mirantis Launchpad together with Te
 
 ## Pre-requisites
 
-* You need an account and credentials for a Openstack Tenant.
+* You need an account and credentials for an Openstack Tenant.
 * Terraform [installed](https://learn.hashicorp.com/terraform/getting-started/install)
 * [yq installed](https://github.com/mikefarah/yq#install)
 * [Generate SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
