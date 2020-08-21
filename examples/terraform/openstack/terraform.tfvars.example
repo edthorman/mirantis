@@ -1,0 +1,37 @@
+# K8s and UCP admin password
+admin_password = "wale!wale"
+
+# SSH Private Key 
+ssh_key_path = "./ssh_keys/test"
+
+# Openstack provider file to access the API
+provider_config_file_path="./provider_config/cloud_provider.conf"
+
+# Docker network settings
+docker_int_net = "10.0.200.1/24"
+docker_default_address_pool = "10.0.201.1/24"
+
+
+docker_enterprise_version = "3.4.0-latest"
+docker_image_repo = "docker.io/dockereng"
+
+
+cluster_name = "test"
+
+# Node counts 
+master_count = 3
+worker_count = 3
+
+# ID of the available and shared public network
+external_network_id = "bf6b85a1-39db-4582-b0d1-f4291dddb9cf"
+external_network_name = "public"
+
+
+# Machine images
+master_image_name = "bionic-server-cloudimg-amd64-20190612"
+worker_image_name = "bionic-server-cloudimg-amd64-20190612"
+
+# Machine types/flavors
+master_flavor = "dev.cfg"
+worker_flavor = "dev.cfg"
+
