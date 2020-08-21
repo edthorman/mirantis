@@ -12,7 +12,7 @@ Raft requires a majority of managers, also called the quorum, to agree on propos
 
 Keep in mind that the manager nodes also host the control plane etcd cluster. Even more importantly, any changes to the cluster require a working etcd cluster with the majority of peers present and working.
 
-As normally with quorum based systems, it is highly advisable to run an odd number of peers. As the control plane only works when a majority can be formed, once you grow the control plane to have more than one node, you can't (automatically) go back to having only one node.
+As usual with quorum based systems, it is highly advisable to run an odd number of peers. As the control plane only works when a majority can be formed, once you grow the control plane to have more than one node, you can't (automatically) go back to having only one node.
 
 ### Adding Manager Nodes
 
@@ -40,15 +40,15 @@ Removing a worker node is currently a multi step process:
 
 ### Notes on DTR Nodes
 
-Docker Trusted Registry (DTR) nodes are identical to worker nodes.  They participate in the UCP swarm but should not be used as traditional worker nodes for both DTR and cluster workloads.  By default, UCP will prevent scheduling of containers on DTR nodes.
+Docker Trusted Registry (DTR) nodes are identical to worker nodes. They participate in the UCP swarm but should not be used as traditional worker nodes for both DTR and cluster workloads. By default, UCP will prevent scheduling of containers on DTR nodes.
 
-DTR forms it's own cluster and quorum in addition to the swarm formed by UCP.  It is best practice to limit DTR nodes to 5, but there is no limit on the amount of DTR nodes that can be configured.  Just like manager nodes, the decision about how many nodes to implement is a trade-off between performance and fault-tolerance.  A larger amount of nodes added can incur severe performance penalties.
+DTR forms it's own cluster and quorum in addition to the swarm formed by UCP. It is best practice to limit DTR nodes to 5, but there is no limit on the amount of DTR nodes that can be configured. Just like manager nodes, the decision about how many nodes to implement is a trade-off between performance and fault-tolerance. A larger amount of nodes added can incur severe performance penalties.
 
 The quorum formed by DTR utilizes RethinkDB which just like swarm uses the Raft Consensus Algorithm.
 
 ### Adding DTR Nodes
 
-Adding DTR nodes is as simple as adding them into the `cluster.yaml` file with a host role of `dtr`.  If you intend to add a DTR node, you must ensure you specify both the `--admin-username` and `--admin-password` install flags via the `installFlags` section in UCP so that DTR knows what admin credentials to use:
+Adding DTR nodes is as simple as adding them into the `cluster.yaml` file with a host role of `dtr`. If you intend to add a DTR node, you must ensure you specify both the `--admin-username` and `--admin-password` install flags via the `installFlags` section in UCP so that DTR knows what admin credentials to use:
 
 ```
 spec:

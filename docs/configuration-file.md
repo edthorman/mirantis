@@ -8,7 +8,7 @@ The complete `cluster.yaml` reference for UCP clusters:
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
-kind: UCP
+kind: DockerEnterprise
 metadata:
   name: launchpad-ucp
 spec:
@@ -82,11 +82,11 @@ We follow Kubernetes like versioning and grouping the launchpad configuration, h
 
 ## `apiVersion`
 
-Currently `launchpad.mirantis.com/v1beta1` and `launchpad.mirantis.com/v1beta2` are supported. A `v1beta1` configuration will still work unchanged, but `v1beta2` features such as `environment`, `engineConfig` and `winRM` can not be used with `v1beta1`.
+Currently `launchpad.mirantis.com/v1beta1`, `v1beta2` and `v1beta3` are supported. Earlier configuration syntaxes should still work unchanged, but any changes and additions in new versions are not backwards compatible.
 
 ## `kind`
 
-Currently only `UCP` is supported.
+Currently only `DockerEnterprise` is supported.
 
 ## `metadata`
 
@@ -100,11 +100,11 @@ The specification for the cluster.
 
 Specify the machines for the cluster.
 
-- `address` - Address of the machine. This needs to be an address to which `launchpad` tool can connect to with SSH protocol.
+- `address` - Address of the machine. This needs to be an address the `launchpad` tool can connect to using SSH protocol.
 - `privateInterface` - Discover private network address from the configured network interface (default: `eth0`)
 - `ssh` - [SSH](#ssh) connection configuration options
 - `winRM` - [WinRM](#winrm) connection configuration options
-- `role` - One of `manager` or `worker`, specifies the role of the machine in the cluster
+- `role` - One of `manager` or `worker` or `dtr`, specifies the role of the machine in the cluster
 - `environment` - Key - value pairs in YAML mapping syntax. Values will be updated to host environment. (optional)
 - `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json`. (optional)
 
@@ -128,7 +128,7 @@ Specify the machines for the cluster.
 
 ### `ucp`
 
-Specify options for UCP cluster itself.
+Specify options for the UCP cluster itself.
 
 - `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
 - `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
@@ -154,7 +154,7 @@ Specify options for the DTR cluster itself.
 - `imageRepo` - Which image repository we should use for DTR installation (default `docker.io/docker`)
 - `installFlags` - Custom installation flags for DTR installation.  You can get a list of supported installation options for a specific DTR version by running the installer container with `docker run -t -i --rm docker/dtr:2.8.1 install --help`. (optional)
 
-    **Note**: `launchpad` will inherit UCP flags which are needed by DTR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `dtr`:
+    **Note**: `launchpad` will inherit the UCP flags which are needed by DTR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `dtr`:
     - `--ucp-username` (inherited from UCP's `--admin-username` flag)
     - `--ucp-password` (inherited from UCP's `--admin-password` flag)
     - `--ucp-url` (inherited from UCP's `--san` flag or intelligently selected based on other configuration variables)

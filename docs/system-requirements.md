@@ -36,7 +36,7 @@ Note that Windows container images are typically larger than Linux container ima
 
 ### Remote management
 
-Launchpad will connect to Linux machines via SSH and to Windows machines via SSH or WinRM. Thus, SSH or WinRM is required to be enabled on host machines. Only passwordless sudo capable SSH Key-Based authentication is supported. On Windows the user needs to have Administrator privileges.
+Launchpad will connect to Linux machines via SSH and to Windows machines via SSH or WinRM. Thus, SSH or WinRM is required to be enabled on the host machines. Only passwordless sudo capable SSH Key-Based authentication is supported. On Windows the user needs to have Administrator privileges.
 
 #### Windows Machines
 

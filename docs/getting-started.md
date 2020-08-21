@@ -25,7 +25,7 @@ To fully evaluate Docker Enterprise, we recommend installing Launchpad on a Linu
 * curl, [Postman](https://www.postman.com/) and/or [client libraries](https://kubernetes.io/docs/reference/using-api/client-libraries/) for accessing the Kubernetes REST API
 * [Docker](https://docs.docker.com/get-docker/) and related tools, for using the 'docker swarm' CLI, and for containerizing workloads and accessing local and remote registries
 
-This machine can reside in different contexts from the hosts and connect with them several different ways, depending on the infrastructure and services at your disposal.
+This machine can reside in different contexts from the hosts and connect with them in several different ways, depending on the infrastructure and services at your disposal.
 
 Your deployer machine must be able to communicate with your hosts on their IP addresses, using several ports. Depending on your infrastructure and security requirements, this can be relatively simple to achieve for evaluation clusters. See [Networking Considerations](networking-considerations.md) for more.
 
@@ -90,7 +90,7 @@ To finalize the installation, you'll need to complete the registration. The info
 $ launchpad register
 name: Luke Skywalker
 company: Jedi Corp
-email: luke@jedicorp.com
+email: luke@example.com
 I agree to Mirantis Launchpad Software Evaluation License Agreement https://github.com/Mirantis/launchpad/blob/master/LICENSE [Y/n]: Yes
 INFO[0022] Registration completed!
 ```
@@ -102,8 +102,8 @@ The cluster is configured using [a yaml file](configuration-file.md). In this ex
 Open up your favourite editor, and type something similar to the example below. Once done, save the file as `cluster.yaml`. Naturally you need to adjust the example below to match your infrastructure details. This model should work to deploy hosts on most public clouds.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta2
-kind: UCP
+apiVersion: launchpad.mirantis.com/v1beta3
+kind: DockerEnterprise
 metadata:
   name: ucp-kube
 spec:
@@ -126,8 +126,8 @@ spec:
 If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta2
-kind: UCP
+apiVersion: launchpad.mirantis.com/v1beta3
+kind: DockerEnterprise
 metadata:
   name: my-ucp
 spec:
@@ -170,7 +170,7 @@ The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you
 At the end of the installation procedure, launchpad will show you the details you can use to connect to your cluster. You will see something like this:
 ```
 INFO[0021] ==> Running phase: UCP cluster info
-INFO[0021] Cluster is now configured.  You can access your admin UIs at: 
+INFO[0021] Cluster is now configured.  You can access your admin UIs at:
 INFO[0021] UCP cluster admin UI: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```

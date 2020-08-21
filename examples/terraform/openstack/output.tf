@@ -2,7 +2,7 @@ locals {
   managers = [
     for ip in module.masters.public_ips : {
       address = ip
-      ssh: { 
+      ssh: {
         user    		= "ubuntu"
         keyPath 	= "./ssh_keys/${var.cluster_name}"
         port			 	= 22
@@ -10,13 +10,13 @@ locals {
       role    = "manager"
       privateInterface = "ens3"
       engineConfig: {
-        bip: "${var.docker_int_net}" 
+        bip: "${var.docker_int_net}"
         default-address-pools: {
           base: "${var.docker_default_address_pool}"
         }
       }
       environment : {
-        http_proxy = var.http_proxy 
+        http_proxy = var.http_proxy
         HTTPS_PROXY = var.https_proxy
       }
     }
@@ -32,13 +32,13 @@ locals {
       role    = "worker"
       privateInterface = "ens3"
       engineConfig: {
-        bip: "${var.docker_int_net}" 
+        bip: "${var.docker_int_net}"
         default-address-pools: {
           base: "${var.docker_default_address_pool}"
         }
       }
       environment : {
-        http_proxy = var.http_proxy 
+        http_proxy = var.http_proxy
         HTTPS_PROXY = var.https_proxy
       }
     }
@@ -47,8 +47,8 @@ locals {
 
 output "ucp_cluster" {
   value = {
-    apiVersion = "launchpad.mirantis.com/v1beta2"
-    kind = "UCP"
+    apiVersion = "launchpad.mirantis.com/v1beta3"
+    kind = "DockerEnterprise"
     metadata = {
       name = "ucpcluster"
     }
