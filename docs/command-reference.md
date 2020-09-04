@@ -19,6 +19,7 @@ The supported options are:
 
 * `--config` - Path to a cluster config file (default: `cluster.yaml`)
 * `--prune` - Automatically remove nodes that are not anymore part of cluster config yaml (default: `false`)
+* `--force` - Continue installation in some cases where prerequisite validation fails (default: `false`)
 
 ## Download a Client Bundle
 
