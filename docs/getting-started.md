@@ -80,7 +80,7 @@ The cluster is configured using [a yaml file](configuration-file.md). In this ex
 Open up your favorite editor, and type something similar to the example below. Once done, save the file as `launchpad.yaml`. Adjust the example below to meet your infrastructure requirements. This model should work to deploy hosts on most public clouds.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta3
+apiVersion: launchpad.mirantis.com/v1
 kind: DockerEnterprise
 metadata:
   name: ucp-kube
@@ -104,7 +104,7 @@ spec:
 If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your launchpad.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta3
+apiVersion: launchpad.mirantis.com/v1
 kind: DockerEnterprise
 metadata:
   name: my-ucp

@@ -47,7 +47,7 @@ locals {
 
 output "ucp_cluster" {
   value = {
-    apiVersion = "launchpad.mirantis.com/v1beta3"
+    apiVersion = "launchpad.mirantis.com/v1"
     kind = "DockerEnterprise"
     metadata = {
       name = "ucpcluster"

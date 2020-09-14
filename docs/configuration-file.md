@@ -7,7 +7,7 @@ Mirantis Launchpad cluster configuration is described in YAML format. You can cr
 The complete `launchpad.yaml` file looks something like this, but with values determined by your specific configuration.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1beta3
+apiVersion: launchpad.mirantis.com/v1
 kind: DockerEnterprise
 metadata:
   name: launchpad-ucp
@@ -15,6 +15,13 @@ spec:
   hosts:
   - address: 10.0.0.1
     role: manager
+    hooks:
+      apply:
+        before:
+          - ls -al > test.txt
+        after:
+          - cat test.txt
+          - rm test.txt
     ssh:
       user: root
       port: 22
@@ -46,8 +53,11 @@ spec:
       user: root
       port: 22
       keyPath: ~/.ssh/id_rsa
+  - address: 127.0.0.1
+    role: worker
+    localhost: true
   ucp:
-    version: "3.3.0"
+    version: "3.3.3"
     imageRepo: "docker.io/docker"
     installFlags:
     - --admin-username=admin
@@ -82,7 +92,7 @@ We follow Kubernetes-like versioning and grouping in launchpad configuration so 
 
 ## `apiVersion`
 
-The latest API version is `launchpad.mirantis.com/v1beta3`, but earlier configuration file syntaxes should still work without support for the changes and additions in later versions.
+The latest API version is `launchpad.mirantis.com/v1`, but earlier configuration file syntaxes should still work without support for the changes and additions in later versions.
 
 ## `kind`
 
@@ -105,19 +115,21 @@ The machines that the cluster runs on.
 SSH protocol
 - `privateInterface` - Private network address for the configured network
 interface (default: `eth0`)
-- `ssh` - [SSH](#ssh) Secure Shell (SSH) connection configuration options
-- `winRM` - [WinRM](#winrm) Windows Remote Management (WinRM) connection
-configuration options
 - `role` - Role of the machine in the cluster. Possible values are:
    - `manager`
    - `worker`
    - `dtr`
-- `environment` - Key - value pairs in YAML mapping syntax. Values are updated
-to host environment (optional)
-- `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be
-converted to `daemon.json` (optional)
+- `environment` - Key - value pairs in YAML mapping syntax. Values are updated to host environment (optional)
+- `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json` (optional)
+- `hooks` - [Hooks](#hooks) configuration for running commands before or after stages (optional)
 
-#### `ssh`
+#### Host connection options
+
+- `ssh` - [SSH](#ssh) Secure Shell (SSH) connection configuration options
+- `winRM` - [WinRM](#winrm) Windows Remote Management (WinRM) connection configuration options
+- `localhost` - Target is the local host where launchpad is running (boolean, default: false)
+-
+##### `ssh`
 
 SSH configuration options.
 
@@ -125,9 +137,9 @@ SSH configuration options.
 - `port` - Host's ssh port (default: `22`)
 - `keyPath` - A local file path to an ssh private key file (default `~/.ssh/id_rsa`)
 
-#### `winRM`
+##### `winRM`
 
-WinRM configuration options. 
+WinRM configuration options.
 
 - `user` - Windows account username (default: `Administrator`)
 - `password` - User account password
@@ -138,6 +150,23 @@ WinRM configuration options.
 - `caCertPath` - Path to CA Certificate file (optional)
 - `certPath` - Path to Certificate file (optional)
 - `keyPath` - Path to Key file (optional)
+
+#### Hooks configuration options
+
+Host hooks can be used to have launchpad run commands on the host before or after operation stages.
+
+- `apply` - Hooks for the [apply](#apply) operation (optional)
+- `reset` - Hooks for the [reset](#reset) operation (optional)
+
+##### Apply
+
+- `before`- A list of commands to run on the host before the "Uninstall" phase (optional)
+- `after`- A list of commands to run on the host before the "Disconnect" phase when the reset was succesful (optional)
+
+##### Reset
+
+- `before`- A list of commands to run on the host before the "Preparing host" phase (optional)
+- `after`- A list of commands to run on the host before the "Disconnect" phase when the apply was succesful (optional)
 
 ### `ucp`
 

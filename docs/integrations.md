@@ -4,12 +4,12 @@ Mirantis Launchpad is distributed as a binary executable. The main integration p
 
 ## Terraform with Mirantis Launchpad
 
-When using cloud environments many people use [Terraform](https://www.terraform.io/) to manage the infrastructure declaratively. The easiest way to integrate Terraform to Mirantis Launchpad is to use [Terraform output](https://www.terraform.io/docs/configuration/outputs.html) values to specify the whole [`launchpad.yaml`](configuration-file.md) structure. 
+When using cloud environments many people use [Terraform](https://www.terraform.io/) to manage the infrastructure declaratively. The easiest way to integrate Terraform to Mirantis Launchpad is to use [Terraform output](https://www.terraform.io/docs/configuration/outputs.html) values to specify the whole [`launchpad.yaml`](configuration-file.md) structure.
 
 ```terraform
 output "ucp_cluster" {
   value = {
-    apiVersion = "launchpad.mirantis.com/v1beta3"
+    apiVersion = "launchpad.mirantis.com/v1"
     kind = "UCP"
     spec = {
       ucp = {
