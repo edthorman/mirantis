@@ -111,7 +111,7 @@ The specification for the cluster.
 
 The machines that the cluster runs on.
 
-- `address` - Address of the server that `launchpad` can connect to using the selected [connection](#hostconnectionoptions) method
+- `address` - Address of the server that `launchpad` can connect to using the selected [connection](#host-connection-options) method
 - `privateInterface` - Private network address for the configured network
 interface (default: `eth0`)
 - `role` - Role of the machine in the cluster. Possible values are:
