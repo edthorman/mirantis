@@ -159,13 +159,13 @@ Host hooks can be used to have launchpad run commands on the host before or afte
 
 ##### Apply
 
-- `before`- A list of commands to run on the host before the "Uninstall" phase (optional)
-- `after`- A list of commands to run on the host before the "Disconnect" phase when the reset was succesful (optional)
+- `before`- A list of commands to run on the host before the "Preparing host" phase (optional)
+- `after`- A list of commands to run on the host before the "Disconnect" phase when the apply was succesful (optional)
 
 ##### Reset
 
-- `before`- A list of commands to run on the host before the "Preparing host" phase (optional)
-- `after`- A list of commands to run on the host before the "Disconnect" phase when the apply was succesful (optional)
+- `before`- A list of commands to run on the host before the "Uninstall" phase (optional)
+- `after`- A list of commands to run on the host before the "Disconnect" phase when the reset was succesful (optional)
 
 ### `ucp`
 
