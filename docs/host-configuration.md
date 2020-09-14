@@ -27,7 +27,7 @@ Hosts must be configured to allow:
 
 * _Configure Docker logging to enable auto-rotation and manage retention_ * &mdash; Additionally, we recommend configuring evaluation hosts, especially those with smaller SSDs/HDDs, to enable basic Docker log rotation and managing old-file retention, thus avoiding filling up cluster storage with retained logs.
 
-This can be done by defining Docker engine configuration in launchpad.yaml, for example:
+This can be done by defining Docker engine configuration in cluster.yaml, for example:
 
 ```yaml
 ...

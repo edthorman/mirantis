@@ -4,7 +4,7 @@ Mirantis Launchpad allows users to upgrade their clusters with the `launchpad ap
 
 ## Upgrading Docker Engine - Enterprise
 
-To upgrade Docker Engine - Enterprise, change the engine version in the `launchpad.yaml` file.
+To upgrade Docker Engine - Enterprise, change the engine version in the `cluster.yaml` file.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
@@ -18,7 +18,7 @@ spec:
   engine:
     version: 19.03.12 # was previously 19.03.8
 ```
-After you update `launchpad.yaml`, you can run `launchpad apply`. Launchpad will upgrade the engine on all hosts in a specific sequence.
+After you update `cluster.yaml`, you can run `launchpad apply`. Launchpad will upgrade the engine on all hosts in a specific sequence.
 
 1. Upgrade the engine on each manager node one-by-one. This means that if you have more than one manager node, the other manager nodes are available while the first node is updated.
 
@@ -28,7 +28,7 @@ After you update `launchpad.yaml`, you can run `launchpad apply`. Launchpad will
 
 ## Upgrading UCP or DTR
 
-When a newer version of UCP or DTR is available you can upgrade to it by changing the version tags in the `launchpad.yaml`:
+When a newer version of UCP or DTR is available you can upgrade to it by changing the version tags in the `cluster.yaml`:
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
@@ -45,7 +45,7 @@ spec:
     version: 2.8.1
 ```
 
-1. Update the version tags and save `launchpad.yaml`.
+1. Update the version tags and save `cluster.yaml`.
 
 2. Run the `launchpad apply` command.
 
@@ -59,7 +59,7 @@ spec:
 
 You can upgrade all of the components -- engine, UCP, and DTR -- at the same time.
 
-1. Update `launchpad.yaml`, as shown in the previous sections.
+1. Update `cluster.yaml`, as shown in the previous sections.
 
 2. Run the `launchpad apply` command.
 

@@ -1,10 +1,10 @@
 # Mirantis Launchpad Configuration File
 
-Mirantis Launchpad cluster configuration is described in YAML format. You can create and modify yaml files using your favorite text editor. The default name for this file is launchpad.yaml, although other file names could be used.
+Mirantis Launchpad cluster configuration is described in YAML format. You can create and modify yaml files using your favorite text editor. The default name for this file is cluster.yaml, although other file names could be used.
 
 ## Configuration File Reference
 
-The complete `launchpad.yaml` file looks something like this, but with values determined by your specific configuration.
+The complete `cluster.yaml` file looks something like this, but with values determined by your specific configuration.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
@@ -127,7 +127,7 @@ SSH configuration options.
 
 #### `winRM`
 
-WinRM configuration options. 
+WinRM configuration options.
 
 - `user` - Windows account username (default: `Administrator`)
 - `password` - User account password

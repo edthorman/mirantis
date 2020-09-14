@@ -77,7 +77,7 @@ INFO[0022] Registration completed!
 
 The cluster is configured using [a yaml file](configuration-file.md). In this example we setup a simple 2 node UCP cluster using Kubernetes. One node is used for UCP and one is a worker node.
 
-Open up your favorite editor, and type something similar to the example below. Once done, save the file as `launchpad.yaml`. Adjust the example below to meet your infrastructure requirements. This model should work to deploy hosts on most public clouds.
+Open up your favorite editor, and type something similar to the example below. Once done, save the file as `cluster.yaml`. Adjust the example below to meet your infrastructure requirements. This model should work to deploy hosts on most public clouds.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
@@ -101,7 +101,7 @@ spec:
       keyPath: ~/.ssh/my_key
 ```
 
-If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your launchpad.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
+If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your cluster.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
 apiVersion: launchpad.mirantis.com/v1beta3
@@ -135,13 +135,13 @@ If you are familiar with [Terraform](https://www.terraform.io/), you can automat
 
 ## Bootstrap your cluster
 
-Once the cluster configuration file is ready, we can fire up the cluster. In the same directory where you created the `launchpad.yaml` file, run:
+Once the cluster configuration file is ready, we can fire up the cluster. In the same directory where you created the `cluster.yaml` file, run:
 
 ```
 $ launchpad apply
 ```
 
-The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you've specified in the `launchpad.yaml` and configures everything needed on the hosts. Within few minutes you should have your cluster up and running.
+The `launchpad` tool uses with SSH or WinRM to connect to the infrastructure you've specified in the `cluster.yaml` and configures everything needed on the hosts. Within few minutes you should have your cluster up and running.
 
 ## Connect to your cluster
 
@@ -153,7 +153,7 @@ INFO[0021] UCP cluster admin UI: https://test-ucp-cluster-master-lb-895b79a08e57
 INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
 ```
 
-By default, the admin username is `admin`. If you did not supply the password in with `launchpad.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
+By default, the admin username is `admin`. If you did not supply the password in with `cluster.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```

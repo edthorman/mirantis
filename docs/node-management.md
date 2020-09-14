@@ -16,25 +16,25 @@ Swarm manager nodes use the Raft Consensus Algorithm to manage the swarm state. 
 
 ## Adding Manager Nodes
 
-Adding manager nodes is as simple as adding them to `launchpad.yaml`. Re-running `launchpad apply` will configure UCP on the new node and also makes necessary changes in the swarm & etcd cluster.
+Adding manager nodes is as simple as adding them to `cluster.yaml`. Re-running `launchpad apply` will configure UCP on the new node and also makes necessary changes in the swarm & etcd cluster.
 
 ## Removing Manager Nodes
 
 Follow this process after you determine that it is safe to remove a manager node and its `etcd` peer.
 
-1. Remove the manager host from `launchpad.yaml`
+1. Remove the manager host from `cluster.yaml`
 2. Run `launchpad apply --prune ...`
 3. Terminate/remove the node in your infrastructure
 
 ## Adding Worker Nodes
 
-Adding worker nodes is as simple as adding them into the `launchpad.yaml`. Re-running `launchpad apply` will configure everything on the new node and joins it into the cluster.
+Adding worker nodes is as simple as adding them into the `cluster.yaml`. Re-running `launchpad apply` will configure everything on the new node and joins it into the cluster.
 
 ## Removing Worker Nodes
 
 Removing a worker node is a multi-step process:
 
-1. Remove the host from `launchpad.yaml`.
+1. Remove the host from `cluster.yaml`.
 2. Run `launchpad apply --prune ...`
 3. Terminate/remove the node in your infrastructure
 
@@ -48,7 +48,7 @@ The quorum formed by DTR utilizes RethinkDB which, just like swarm, uses the Raf
 
 ## Adding DTR Nodes
 
-Adding DTR nodes is as simple as adding them into the `launchpad.yaml` file with a host role of `dtr`. When you add a DTR node, specify both the `--admin-username` and `--admin-password` install flags via the `installFlags` section in UCP so that DTR knows what admin credentials to use:
+Adding DTR nodes is as simple as adding them into the `cluster.yaml` file with a host role of `dtr`. When you add a DTR node, specify both the `--admin-username` and `--admin-password` install flags via the `installFlags` section in UCP so that DTR knows what admin credentials to use:
 
 ```
 spec:
@@ -64,6 +64,6 @@ Next, re-run `launchpad apply` which will configure everything on the new node a
 
 Removing a DTR node is currently a multi step process:
 
-1. Remove the host from `launchpad.yaml`.
+1. Remove the host from `cluster.yaml`.
 2. Run `launchpad apply --prune`
 3. Terminate/remove the node in your infrastructure
