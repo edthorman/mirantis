@@ -111,8 +111,7 @@ The specification for the cluster.
 
 The machines that the cluster runs on.
 
-- `address` - Address of the SSH server that `launchpad` can connect to using
-SSH protocol
+- `address` - Address of the server that `launchpad` can connect to using the selected [connection](#hostconnectionoptions) method
 - `privateInterface` - Private network address for the configured network
 interface (default: `eth0`)
 - `role` - Role of the machine in the cluster. Possible values are:
@@ -128,7 +127,7 @@ interface (default: `eth0`)
 - `ssh` - [SSH](#ssh) Secure Shell (SSH) connection configuration options
 - `winRM` - [WinRM](#winrm) Windows Remote Management (WinRM) connection configuration options
 - `localhost` - Target is the local host where launchpad is running (boolean, default: false)
--
+
 ##### `ssh`
 
 SSH configuration options.
