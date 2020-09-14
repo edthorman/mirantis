@@ -12,7 +12,7 @@ Optional arguments that can be used with any of the `launchpad` commands.
 
 ## Initialize Launchpad
 
-Intializes the cluster config file, usually called cluster.yaml.
+Intializes the cluster config file, usually called launchpad.yaml.
 
 `launchpad init`
 
@@ -26,7 +26,7 @@ initialize or upgrade a cluster.
 The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename
-(default: `cluster.yaml`)
+(default: `launchpad.yaml`)
 * `--prune` - Remove nodes that are no longer in the cluster config yaml
 (default: `false`)
 * `--force` - Continue installation when prerequisite validation fails
@@ -35,7 +35,7 @@ The supported options are:
 ## Download a client bundle
 
 The client bundle contains a private and public key pair that authorizes
-Launchpad to interact with
+Launchpad to interact with 
 [UCP CLI](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/user-access.html#cli-access).
 
 `launchpad download-bundle`
@@ -45,7 +45,7 @@ The supported options are:
 * `--username` - Username
 * `--password` - Password
 * `--config` - Path to a cluster config file, including the filename
-(default: `cluster.yaml`)
+(default: `launchpad.yaml`)
 
 ## Register
 
@@ -67,7 +67,7 @@ To reset or uninstall a UCP cluster.
 
 The supported options are:
 
-* `--config` - Path to a cluster config file, including the filename (default: `cluster.yaml`)
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`)
 
 ## Related topics
 

@@ -14,10 +14,10 @@ This directory provides an example flow with Mirantis Launchpad together with Te
 1. Create terraform.tfvars file with needed details. You can use the provided terraform.tfvars.example as a baseline.
 2. `terraform init`
 3. Create SSH key and configure path
-4. Create Cloud Provider config file and configure path
+4. Create Cloud Provider config file and configure path 
 5. Configure .tfvars file with all necessary parameters
 6. `terraform apply`
-7. `terraform output -json | yq r --prettyPrint - ucp_cluster.value > cluster.yaml`
+7. `terraform output -json | yq r --prettyPrint - ucp_cluster.value > launchpad.yaml`
 8. `launchpad apply`
 
 ## Related topics

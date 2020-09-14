@@ -14,5 +14,5 @@ This directory provides an example flow with Mirantis Launchpad tool together wi
 1. Create a terraform.tfvars file with the necessary details. You can use the provided terraform.tfvars.example as a baseline.
 2. `terraform init`
 3. `terraform apply`
-4. `terraform output -json | yq r --prettyPrint - ucp_cluster.value > cluster.yaml `
+4. `terraform output -json | yq r --prettyPrint - ucp_cluster.value > launchpad.yaml `
 5. `launchpad apply`
