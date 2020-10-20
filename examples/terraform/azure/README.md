@@ -1,0 +1,25 @@
+# Bootstrapping UCP cluster on Azure
+
+This directory provides an example flow for using Mirantis Launchpad with Terraform and Azure.
+
+## Prerequisites
+
+* An account and credentials for Azure.
+* Terraform [installed](https://learn.hashicorp.com/terraform/getting-started/install)
+* [yq installed](https://github.com/mikefarah/yq#install)
+
+## Steps
+
+1. Create terraform.tfvars file with needed details. You can use the provided terraform.tfvars.example as a baseline.
+2. `terraform init`
+3. `terraform apply`
+4. `terraform output -json | yq r --prettyPrint - ucp_cluster.value > launchpad.yaml`
+5. `launchpad apply`
+
+## Notes
+
+1. If any Windows workers are created then a random password will be generated for the admin account `DockerAdmin` that is created.
+2. Only Linux workers are added to the LoadBalancer created for workers.
+3. Both RDP and WinRM ports are opened for Windows workers.
+4. A default storage account is created for kubernetes.
+5. The number of Fault & Update Domains varies depending on which Azure Region you're using. A list can be found [here](https://github.com/MicrosoftDocs/azure-docs/blob/master/includes/managed-disks-common-fault-domain-region-list.md). The Fault & Update Domain values are used in the Availability Set definitions.
