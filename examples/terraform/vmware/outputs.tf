@@ -1,8 +1,8 @@
 locals {
   managers = [
     for host in module.managers.machines : {
-      address = host.default_ip_address
-      role    = "manager"
+      address          = host.default_ip_address
+      role             = "manager"
       privateInterface = "ens5" # Is this supposed to be a constant?
       ssh = {
         user    = "ubuntu" # "TODO: Probably make this a variable"
@@ -12,8 +12,8 @@ locals {
   ]
   workers = [
     for host in module.workers.machines : {
-      address = host.default_ip_address
-      role    = "worker"
+      address          = host.default_ip_address
+      role             = "worker"
       privateInterface = "ens5" # Is this supposed to be a constant?
       ssh = {
         user    = "ubuntu" # "TODO: Probably make this a variable"
@@ -32,15 +32,12 @@ locals {
   #     }
   #   }
   # ]
-}
-
-output "ucp_cluster" {
-  value = {
+  launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/v1"
-    kind = "DockerEnterprise"
+    kind       = "DockerEnterprise"
     spec = {
       ucp = {
-        installFlags: [
+        installFlags : [
           "--admin-username=${var.ucp_admin_username}",
           "--admin-password=${var.ucp_admin_password}",
           "--default-node-orchestrator=kubernetes",
@@ -50,4 +47,8 @@ output "ucp_cluster" {
       hosts = concat(local.managers, local.workers) #, local.windows_workers)
     }
   }
+}
+
+output "ucp_cluster" {
+  value = yamlencode(local.launchpad_tmpl)
 }

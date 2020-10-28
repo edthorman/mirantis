@@ -38,27 +38,27 @@ data "vsphere_virtual_machine" "template_vm_linux" {
 # }
 
 module "managers" {
-  source = "./modules/virtual_machine"
-  quantity = var.quantity_managers
-  name_prefix = "manager"
-  resource_pool_id = data.vsphere_resource_pool.resource_pool.id
+  source               = "./modules/virtual_machine"
+  quantity             = var.quantity_managers
+  name_prefix          = "manager"
+  resource_pool_id     = data.vsphere_resource_pool.resource_pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
-  folder = var.folder
-  network_id = data.vsphere_network.network.id
-  template_vm = data.vsphere_virtual_machine.template_vm_linux
-  disk_size = 16
+  folder               = var.folder
+  network_id           = data.vsphere_network.network.id
+  template_vm          = data.vsphere_virtual_machine.template_vm_linux
+  disk_size            = 16
 }
 
 module "workers" {
-  source = "./modules/virtual_machine"
-  quantity = var.quantity_workers
-  name_prefix = "worker"
-  resource_pool_id = data.vsphere_resource_pool.resource_pool.id
+  source               = "./modules/virtual_machine"
+  quantity             = var.quantity_workers
+  name_prefix          = "worker"
+  resource_pool_id     = data.vsphere_resource_pool.resource_pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
-  folder = var.folder
-  network_id = data.vsphere_network.network.id
-  template_vm = data.vsphere_virtual_machine.template_vm_linux
-  disk_size = 16
+  folder               = var.folder
+  network_id           = data.vsphere_network.network.id
+  template_vm          = data.vsphere_virtual_machine.template_vm_linux
+  disk_size            = 16
 }
 
 # module "workers_windows" {

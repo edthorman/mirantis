@@ -11,24 +11,24 @@ variable "vsphere_password" {
 }
 
 variable "datacenter" {
-    default = ""
+  default = ""
 }
 
 variable "resource_pool" {
 }
 
 variable "folder" {
-    default = ""
+  default = ""
 }
 
-variable "datastore_cluster" {    
+variable "datastore_cluster" {
 }
 
 variable "network" {
 }
 
 variable "template_vm_linux" {
-    description = "VM to use as a template for the linux nodes (managers, workers)"
+  description = "VM to use as a template for the linux nodes (managers, workers)"
 }
 
 # variable "template_vm_windows" {
@@ -41,7 +41,7 @@ variable "ssh_private_key_file" {
 
 variable "ucp_admin_username" {
   description = "Desired username for the UCP admin account"
-  default = "admin"
+  default     = "admin"
 }
 
 variable "ucp_admin_password" {
@@ -54,12 +54,12 @@ variable "ucp_lb_dns_name" {
 
 variable "quantity_managers" {
   description = "Number of UCP manager VMs to create"
-  default = 3
+  default     = 3
 }
 
 variable "quantity_workers" {
   description = "Number of UCP worker VMs to create"
-  default = 3
+  default     = 3
 }
 
 # variable "quantity_workers_windows" {

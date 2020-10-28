@@ -1,5 +1,5 @@
 variable "hcloud_token" {
-    description = "Hetzner API token"
+  description = "Hetzner API token"
 }
 
 provider "hcloud" {
@@ -7,79 +7,83 @@ provider "hcloud" {
 }
 
 variable "ssh_keys" {
-    default = []
+  default = []
 }
 
 variable "ssh_user" {
-    default = "root"
+  default = "root"
 }
 
 variable "cluster_name" {
-    default = "ucp"
+  default = "ucp"
 }
 
 variable "location" {
-    default = "hel1"
+  default = "hel1"
 }
 
 variable "image" {
-    default = "ubuntu-18.04"
+  default = "ubuntu-18.04"
 }
 
 variable "master_type" {
-    default = "cx31"
+  default = "cx31"
 }
 
 variable "worker_count" {
-    default = 1
+  default = 1
 }
 
 variable "master_count" {
-    default = 1
+  default = 1
 }
 
 variable "worker_type" {
-    default = "cx31"
+  default = "cx31"
 }
 
 resource "hcloud_server" "master" {
-    count = "${var.master_count}"
-    name = "${var.cluster_name}-master-${count.index}"
-    image = "${var.image}"
-    server_type = "${var.master_type}"
-    ssh_keys = "${var.ssh_keys}"
-    location = "${var.location}"
-    labels = {
-        role = "manager"
-    }
+  count       = "${var.master_count}"
+  name        = "${var.cluster_name}-master-${count.index}"
+  image       = "${var.image}"
+  server_type = "${var.master_type}"
+  ssh_keys    = "${var.ssh_keys}"
+  location    = "${var.location}"
+  labels = {
+    role = "manager"
+  }
 }
 
 resource "hcloud_server" "worker" {
-    count = "${var.worker_count}"
-    name = "${var.cluster_name}-worker-${count.index}"
-    image = "${var.image}"
-    server_type = "${var.worker_type}"
-    ssh_keys = "${var.ssh_keys}"
-    location = "${var.location}"
-    labels = {
-        role = "worker"
+  count       = "${var.worker_count}"
+  name        = "${var.cluster_name}-worker-${count.index}"
+  image       = "${var.image}"
+  server_type = "${var.worker_type}"
+  ssh_keys    = "${var.ssh_keys}"
+  location    = "${var.location}"
+  labels = {
+    role = "worker"
+  }
+}
+
+locals {
+  launchpad_tmpl = {
+    apiVersion = "launchpad.mirantis.com/v1"
+    kind       = "DockerEnterprise"
+    spec = {
+      hosts = [
+        for host in concat(hcloud_server.master, hcloud_server.worker) : {
+          address = host.ipv4_address
+          ssh = {
+            user = "root"
+          }
+          role = host.labels.role
+        }
+      ]
     }
+  }
 }
 
 output "ucp_cluster" {
-    value = {
-        apiVersion = "launchpad.mirantis.com/v1"
-        kind = "DockerEnterprise"
-        spec = {
-            hosts = [
-                for host in concat(hcloud_server.master, hcloud_server.worker) : {
-                    address      = host.ipv4_address
-                    ssh = {
-                      user    = "root"
-                    }
-                    role    = host.labels.role
-                }
-            ]
-        }
-    }
+  value = yamlencode(local.launchpad_tmpl)
 }

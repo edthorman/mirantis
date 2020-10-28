@@ -42,16 +42,16 @@ module "workers" {
 }
 
 module "windows_workers" {
-  source                = "./modules/windows_worker"
-  worker_count          = var.windows_worker_count
-  vpc_id                = module.vpc.id
-  cluster_name          = var.cluster_name
-  subnet_ids            = module.vpc.public_subnet_ids
-  security_group_id     = module.common.security_group_id
-  image_id              = module.common.windows_2019_image_id
-  kube_cluster_tag      = module.common.kube_cluster_tag
-  instance_profile_name = module.common.instance_profile_name
-  worker_type           = var.worker_type
+  source                         = "./modules/windows_worker"
+  worker_count                   = var.windows_worker_count
+  vpc_id                         = module.vpc.id
+  cluster_name                   = var.cluster_name
+  subnet_ids                     = module.vpc.public_subnet_ids
+  security_group_id              = module.common.security_group_id
+  image_id                       = module.common.windows_2019_image_id
+  kube_cluster_tag               = module.common.kube_cluster_tag
+  instance_profile_name          = module.common.instance_profile_name
+  worker_type                    = var.worker_type
   windows_administrator_password = var.windows_administrator_password
 }
 
@@ -63,7 +63,7 @@ locals {
         user    = "ubuntu"
         keyPath = "./ssh_keys/${var.cluster_name}.pem"
       }
-      role    = host.tags["Role"]
+      role             = host.tags["Role"]
       privateInterface = "ens5"
     }
   ]
@@ -74,7 +74,7 @@ locals {
         user    = "ubuntu"
         keyPath = "./ssh_keys/${var.cluster_name}.pem"
       }
-      role    = host.tags["Role"]
+      role             = host.tags["Role"]
       privateInterface = "ens5"
     }
   ]
@@ -82,25 +82,21 @@ locals {
     for host in module.windows_workers.machines : {
       address = host.public_ip
       winRM = {
-        user    = "Administrator"
+        user     = "Administrator"
         password = var.windows_administrator_password
         useHTTPS = true
         insecure = true
       }
-      role    = host.tags["Role"]
+      role             = host.tags["Role"]
       privateInterface = "Ethernet 2"
     }
   ]
-}
-
-
-output "ucp_cluster" {
-  value = {
+  launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/v1"
-    kind = "DockerEnterprise"
+    kind       = "DockerEnterprise"
     spec = {
       ucp = {
-        installFlags: [
+        installFlags : [
           "--admin-username=admin",
           "--admin-password=${var.admin_password}",
           "--default-node-orchestrator=kubernetes",
@@ -110,4 +106,9 @@ output "ucp_cluster" {
       hosts = concat(local.managers, local.workers, local.windows_workers)
     }
   }
+}
+
+
+output "ucp_cluster" {
+  value = yamlencode(local.launchpad_tmpl)
 }
