@@ -23,3 +23,4 @@ This directory provides an example flow for using Mirantis Launchpad with Terraf
 3. Both RDP and WinRM ports are opened for Windows workers.
 4. A default storage account is created for kubernetes.
 5. The number of Fault & Update Domains varies depending on which Azure Region you're using. A list can be found [here](https://github.com/MicrosoftDocs/azure-docs/blob/master/includes/managed-disks-common-fault-domain-region-list.md). The Fault & Update Domain values are used in the Availability Set definitions.
+6. **Windows worker nodes need to be rebooted after engine install, which must be done manually until version 1.1 is released**
