@@ -68,7 +68,7 @@ resource "hcloud_server" "worker" {
 
 locals {
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1"
+    apiVersion = "launchpad.mirantis.com/v1.1"
     kind       = "DockerEnterprise"
     spec = {
       hosts = [

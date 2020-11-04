@@ -80,7 +80,7 @@ The cluster is configured using [a yaml file](configuration-file.md). In this ex
 Open up your favorite editor, and type something similar to the example below. Once done, save the file as `launchpad.yaml`. Adjust the example below to meet your infrastructure requirements. This model should work to deploy hosts on most public clouds.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1
+apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 metadata:
   name: ucp-kube
@@ -104,7 +104,7 @@ spec:
 If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your launchpad.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1
+apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 metadata:
   name: my-ucp
@@ -150,10 +150,12 @@ At the end of the installation procedure, launchpad will show you the details yo
 INFO[0021] ==> Running phase: UCP cluster info
 INFO[0021] Cluster is now configured.  You can access your admin UIs at:
 INFO[0021] UCP cluster admin UI: https://test-ucp-cluster-master-lb-895b79a08e57c67b.elb.eu-north-1.amazonaws.com
-INFO[0021] You can also download the admin client bundle with the following command: launchpad download-bundle --username <username> --password <password>
+INFO[0021] You can also download the admin client bundle with the following command: launchpad client-config
 ```
 
 By default, the admin username is `admin`. If you did not supply the password in with `launchpad.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
+
+Note that you need to provide the password in the `launchpad.yaml` in any subsequent runs of launchpad or adding or removing nodes will fail.

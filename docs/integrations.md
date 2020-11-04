@@ -7,29 +7,68 @@ Mirantis Launchpad is distributed as a binary executable. The main integration p
 When using cloud environments many people use [Terraform](https://www.terraform.io/) to manage the infrastructure declaratively. The easiest way to integrate Terraform to Mirantis Launchpad is to use [Terraform output](https://www.terraform.io/docs/configuration/outputs.html) values to specify the whole [`launchpad.yaml`](configuration-file.md) structure.
 
 ```terraform
-output "ucp_cluster" {
-  value = {
-    apiVersion = "launchpad.mirantis.com/v1"
-    kind = "UCP"
+locals {
+  managers = [
+    for host in module.masters.machines : {
+      address = host.public_ip
+      ssh = {
+        user    = "ubuntu"
+        keyPath = "./ssh_keys/${var.cluster_name}.pem"
+      }
+      role             = host.tags["Role"]
+      privateInterface = "ens5"
+    }
+  ]
+  workers = [
+    for host in module.workers.machines : {
+      address = host.public_ip
+      ssh = {
+        user    = "ubuntu"
+        keyPath = "./ssh_keys/${var.cluster_name}.pem"
+      }
+      role             = host.tags["Role"]
+      privateInterface = "ens5"
+    }
+  ]
+  windows_workers = [
+    for host in module.windows_workers.machines : {
+      address = host.public_ip
+      winRM = {
+        user     = "Administrator"
+        password = var.windows_administrator_password
+        useHTTPS = true
+        insecure = true
+      }
+      role             = host.tags["Role"]
+      privateInterface = "Ethernet 2"
+    }
+  ]
+  launchpad_tmpl = {
+    apiVersion = "launchpad.mirantis.com/v1.1"
+    kind       = "DockerEnterprise"
     spec = {
       ucp = {
-        installFlags: [
+        installFlags : [
           "--admin-username=admin",
           "--admin-password=${var.admin_password}",
           "--default-node-orchestrator=kubernetes",
-          "--san=${module.managers.lb_dns_name}",
+          "--san=${module.masters.lb_dns_name}",
         ]
       }
-      hosts = concat(local.managers, local.workers)
+      hosts = concat(local.managers, local.workers, local.windows_workers)
     }
   }
 }
+
+output "ucp_cluster" {
+  value = yamlencode(local.launchpad_tmpl)
+}
 ```
 
-Terraform is currently limited to output json format. To convert the json to yaml, you can use a tool called [`yq`](https://github.com/mikefarah/yq) that converts the json to yaml so you can use command piping to convert the Terraform output to `launchpad.yaml`.
+To output the launchpad configuration, use:
 
 ```
-terraform output -json | yq r --prettyPrint - ucp_cluster.value > launchpad.yaml
+terraform output ucp_cluster > launchpad.yaml
 ```
 
 You can now use the `launchpad apply` command, and Launchpad will install all the needed cluster components.

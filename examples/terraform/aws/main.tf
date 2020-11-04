@@ -92,7 +92,7 @@ locals {
     }
   ]
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1"
+    apiVersion = "launchpad.mirantis.com/v1.1"
     kind       = "DockerEnterprise"
     spec = {
       ucp = {
@@ -107,7 +107,6 @@ locals {
     }
   }
 }
-
 
 output "ucp_cluster" {
   value = yamlencode(local.launchpad_tmpl)

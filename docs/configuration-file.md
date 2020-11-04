@@ -7,7 +7,7 @@ Mirantis Launchpad cluster configuration is described in YAML format. You can cr
 The complete `launchpad.yaml` file looks something like this, but with values determined by your specific configuration.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1
+apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 metadata:
   name: launchpad-ucp
@@ -49,6 +49,7 @@ spec:
       keyPath: ~/.certs/key.pem
   - address: 10.0.0.3
     role: dtr
+    imageDir: ./dtr-images
     ssh:
       user: root
       port: 22
@@ -61,7 +62,7 @@ spec:
     imageRepo: "docker.io/docker"
     installFlags:
     - --admin-username=admin
-    - --admin-password=orcaorcaorca
+    - --admin-password="$UCP_ADMIN_PASSWORD"
     licenseFilePath: ./docker-enterprise.lic
     configFile: ./ucp-config.toml
     configData: |-
@@ -86,13 +87,41 @@ spec:
     repoURL: https://repos.mirantis.com
     installURLLinux: https://get.mirantis.com/
     installURLWindows: https://get.mirantis.com/install.ps1
+  cluster:
+    prune: true
 ```
 
 We follow Kubernetes-like versioning and grouping in launchpad configuration so you'll see familiar attributes such as `kind`.
 
+## Environment variable substitution
+
+When reading the configuration file, launchpad will replace any strings starting with a dollar sign with values from the local host's environment variables. Example:
+
+```yaml
+apiVersion: launchpad.mirantis.com/v1.1
+kind: DockerEnterprise
+spec:
+  ucp:
+    installFlags:
+    - --admin-password="$UCP_ADMIN_PASSWORD"
+```
+
+Very simple bash-like expressions are supported:
+
+Expression | Meaning
+-- | --
+${var} | Value of var (same as $var)
+${var-$DEFAULT} | If var not set, evaluate expression as $DEFAULT
+${var:-$DEFAULT} | If var not set or is empty, evaluate expression as $DEFAULT
+${var=$DEFAULT} | If var not set, evaluate expression as $DEFAULT
+${var:=$DEFAULT} | If var not set or is empty, evaluate expression as $DEFAULT
+${var+$OTHER} | If var set, evaluate expression as $OTHER, otherwise as empty string
+${var:+$OTHER} | If var set, evaluate expression as $OTHER, otherwise as empty string
+$$var | Escape expressions. Result will be $var.
+
 ## `apiVersion`
 
-The latest API version is `launchpad.mirantis.com/v1`, but earlier configuration file syntaxes should still work without support for the changes and additions in later versions.
+The latest API version is `launchpad.mirantis.com/v1.1`, but earlier configuration file versions should still work without changes if you do not intend to use any of the added features of the current version.
 
 ## `kind`
 
@@ -121,6 +150,7 @@ interface (default: `eth0`)
 - `environment` - Key - value pairs in YAML mapping syntax. Values are updated to host environment (optional)
 - `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json` (optional)
 - `hooks` - [Hooks](#hooks) configuration for running commands before or after stages (optional)
+- `imageDir` - Path to a directory containing `.tar`/`.tar.gz` files produced by `docker save`. The images from that directory will be uploaded and `docker load` is used to load them.
 
 #### Host connection options
 
@@ -212,7 +242,13 @@ Specify options for the DTR cluster.
 - `installURLLinux` - Where to download the initial installer script for linux hosts. Local paths can also be used. (default: `https://get.mirantis.com/`)
 - `installURLWindows` - Where to download the initial installer script for windows hosts. Also local paths can be used. (default: `https://get.mirantis.com/install.ps1`)
 
-**Note:** In most scenarios, you should not need to specify `repoUrl` and `installURLLinux/Windows`, which are only usually used when installing from a non-standard location like a disconnected datacenter.
+    **Note:** In most scenarios, you should not need to specify `repoUrl` and `installURLLinux/Windows`, which are only usually used when installing from a non-standard location like a disconnected datacenter.
+
+### `cluster`
+
+ Specify options not specific to any of the individual components.
+
+- `prune` - Set to `true` to remove nodes that are known by the cluster but not listed in the `launchpad.yaml`.
 
 ## Related topics
 

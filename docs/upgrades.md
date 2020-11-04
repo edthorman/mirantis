@@ -7,7 +7,7 @@ Mirantis Launchpad allows users to upgrade their clusters with the `launchpad ap
 To upgrade Docker Engine - Enterprise, change the engine version in the `launchpad.yaml` file.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1
+apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 metadata:
   name: launchpad-ucp
@@ -31,7 +31,7 @@ After you update `launchpad.yaml`, you can run `launchpad apply`. Launchpad will
 When a newer version of UCP or DTR is available you can upgrade to it by changing the version tags in the `launchpad.yaml`:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1
+apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 metadata:
   name: launchpad-ucp
@@ -53,7 +53,7 @@ spec:
 
 4. Launchpad upgrades each node as described in the "Upgrading Docker Engine - Enterprise" section. This may take several minutes.
 
-**Note:** UCP and DTR upgrade paths require consecutive minor versions. For example, you cannot upgrade from UCP 3.1.0 to 3.1.2; you must upgrade from UCP 3.1.0 to 3.1.1 to 3.1.2.
+**Note:** UCP and DTR upgrade paths require consecutive minor versions. For example, you cannot upgrade from UCP 3.1.0 to 3.3.0; you must upgrade from UCP 3.1.0 to 3.2.0 first.
 
 ## Upgrading Docker Engine - Enterprise, UCP, and DTR together
 
