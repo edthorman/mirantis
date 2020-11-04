@@ -153,7 +153,7 @@ INFO[0021] UCP cluster admin UI: https://test-ucp-cluster-master-lb-895b79a08e57
 INFO[0021] You can also download the admin client bundle with the following command: launchpad client-config
 ```
 
-By default, the admin username is `admin`. If you did not supply the password in with `launchpad.yaml` or via the `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
+By default, the admin username is `admin`. If you did not supply the password in `launchpad.yaml` `installFlags` option like `--admin-password=supersecret`, the generated admin password will be displayed in the install flow:
 ```
 INFO[0083] 127.0.0.1:  time="2020-05-26T05:25:12Z" level=info msg="Generated random admin password: wJm-TzIzQrRNx7d1fWMdcscu_1pN5Xs0"
 ```
