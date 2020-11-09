@@ -25,7 +25,7 @@ initialize or upgrade a cluster.
 
 The supported options are:
 
-* `--config` - Path to a cluster config file, including the filename
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 (default: `launchpad.yaml`)
 * `--prune` - Remove nodes that are no longer in the cluster config yaml
 (default: `false`)
@@ -41,7 +41,7 @@ Launchpad to interact with the [UCP CLI](https://docs.mirantis.com/docker-enterp
 
 The supported options are:
 
-* `--config` - Path to a cluster config file, including the filename
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 (default: `launchpad.yaml`)
 
 **Note:** The configuration must include the UCP credentials, example:
@@ -56,6 +56,41 @@ spec:
       - --admin-password="password"
 ```
 
+## Reset or uninstall a cluster
+
+To reset or uninstall a UCP cluster.
+
+`launchpad reset`
+
+The supported options are:
+
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
+* `--force` - Required when running non-interactively (default: `false`)
+
+## Execute a command or run a remote terminal on a host
+
+You can use launchpad to run commands or an interactive terminal on the hosts in the configuration.
+
+`launchpad exec`
+
+The supported options are:
+
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
+* `--target value`  - Target host (example: address[:port])
+* `--interactive` - Run interactive (default: false)
+* `--first` - Use the first target found in configuration (default: false)
+* `--role value` - Use the first target having this role in configuration
+* `[command]` - The command to run. When blank, will run the default shell.
+
+## Show cluster status
+
+`launchpad describe`
+
+The supported options are:
+
+* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
+* `[report name]` - Currently supported reports: `hosts`, `ucp`, `dtr`
+
 ## Register
 
 Registers a user.
@@ -68,16 +103,6 @@ The supported options are:
 * `--email` - Email
 * `--company` - Company
 
-## Reset or uninstall a cluster
-
-To reset or uninstall a UCP cluster.
-
-`launchpad reset`
-
-The supported options are:
-
-* `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`)
-* `--force` - Required when running non-interactively (default: `false`)
 
 ## Generate shell auto-completions
 
