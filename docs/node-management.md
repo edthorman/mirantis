@@ -23,8 +23,17 @@ Adding manager nodes is as simple as adding them to `launchpad.yaml`. Re-running
 Follow this process after you determine that it is safe to remove a manager node and its `etcd` peer.
 
 1. Remove the manager host from `launchpad.yaml`
-2. Run `launchpad apply --prune ...`
-3. Terminate/remove the node in your infrastructure
+2. Change the `prune` setting to `true` in `spec.cluster.prune`, see example below.
+3. Run `launchpad apply`
+4. Terminate/remove the node in your infrastructure
+
+Enable pruning:
+
+```yaml
+spec:
+  cluster:
+    prune: true
+```
 
 ## Adding Worker Nodes
 
@@ -35,8 +44,9 @@ Adding worker nodes is as simple as adding them into the `launchpad.yaml`. Re-ru
 Removing a worker node is a multi-step process:
 
 1. Remove the host from `launchpad.yaml`.
-2. Run `launchpad apply --prune ...`
-3. Terminate/remove the node in your infrastructure
+2. Change the `prune` setting to `true` in `spec.cluster.prune`, see example above.
+3. Run `launchpad apply`
+4. Terminate/remove the node in your infrastructure
 
 ## Notes on DTR Nodes
 
@@ -48,14 +58,13 @@ The quorum formed by DTR utilizes RethinkDB which, just like swarm, uses the Raf
 
 ## Adding DTR Nodes
 
-Adding DTR nodes is as simple as adding them into the `launchpad.yaml` file with a host role of `dtr`. When you add a DTR node, specify both the `--admin-username` and `--admin-password` install flags via the `installFlags` section in UCP so that DTR knows what admin credentials to use:
+Adding DTR nodes is as simple as adding them into the `launchpad.yaml` file with a host role of `dtr`. When you add a DTR node, specify both the `adminUsername` and `adminPassword` in the `spec.ucp` section of `launchpad.yaml` so that DTR knows the admin credentials to use:
 
 ```
 spec:
   ucp:
-    installFlags:
-    - --admin-username=admin
-    - --admin-password=passw0rd!
+    adminUsername: admin
+    adminPassword: passw0rd!
 ```
 
 Next, re-run `launchpad apply` which will configure everything on the new node and join it into the cluster.
@@ -65,5 +74,6 @@ Next, re-run `launchpad apply` which will configure everything on the new node a
 Removing a DTR node is currently a multi step process:
 
 1. Remove the host from `launchpad.yaml`.
-2. Run `launchpad apply --prune`
-3. Terminate/remove the node in your infrastructure
+2. Change the `prune` setting to `true` in `spec.cluster.prune`, see example above.
+3. Run `launchpad apply`
+4. Terminate/remove the node in your infrastructure

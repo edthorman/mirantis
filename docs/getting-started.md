@@ -86,9 +86,9 @@ metadata:
   name: ucp-kube
 spec:
   ucp:
+    adminUsername: admin
+    adminPassword: passw0rd!
     installFlags:
-    - --admin-username=admin
-    - --admin-password=passw0rd!
     - --default-node-orchestrator=kubernetes
   hosts:
   - address: 172.16.33.100
@@ -110,9 +110,9 @@ metadata:
   name: my-ucp
 spec:
   ucp:
+    adminUsername: admin
+    adminPassword: passw0rd!
     installFlags:
-      - --admin-username=admin
-      - --admin-password=passw0rd!
       - --default-node-orchestrator=kubernetes
       - --pod-cidr 10.0.0.0/16
   hosts:

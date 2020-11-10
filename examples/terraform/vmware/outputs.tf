@@ -37,9 +37,9 @@ locals {
     kind       = "DockerEnterprise"
     spec = {
       ucp = {
+        adminUsername = var.ucp_admin_username
+        adminPassword = var.ucp_admin_password
         installFlags : [
-          "--admin-username=${var.ucp_admin_username}",
-          "--admin-password=${var.ucp_admin_password}",
           "--default-node-orchestrator=kubernetes",
           "--san=${var.ucp_lb_dns_name}",
         ]

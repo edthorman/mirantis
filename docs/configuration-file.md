@@ -60,9 +60,10 @@ spec:
   ucp:
     version: "3.3.3"
     imageRepo: "docker.io/docker"
+    adminUsername: admin
+    adminPassword: "$UCP_ADMIN_PASSWORD"
     installFlags:
-    - --admin-username=admin
-    - --admin-password="$UCP_ADMIN_PASSWORD"
+    - --default-node-orchestrator=kubernetes
     licenseFilePath: ./docker-enterprise.lic
     configFile: ./ucp-config.toml
     configData: |-
@@ -203,11 +204,15 @@ Specify options for the UCP cluster itself.
 
 - `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
 - `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
+- `adminUsername` - UCP administrator username (default: `admin`)
+- `adminPassword`- UCP administrator password (default: auto-generate)
 - `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
 - `licenseFilePath` - Optional. A path to Docker Enterprise license file.
 - `configFile` - Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html).
 - `configData` -  Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html) in embedded "heredocs" way. Heredocs allows you to define a mulitiline string while maintaining the original formatting and indenting
 - `cloud` - Optional. Cloud provider configuration
+
+**Note:** The UCP installer will automatically generate an administrator password unless provided and it will be displayed in clear text in the output and persisted in the logs. The automatically generated password must be configured in the `launchpad.yaml` for any subsequent runs or they will fail.
 
 #### `cloud`
 
@@ -226,8 +231,8 @@ Specify options for the DTR cluster.
 - `installFlags` - Custom installation flags for DTR installation.  You can get a list of supported installation options for a specific DTR version by running the installer container with `docker run -t -i --rm docker/dtr:2.8.1 install --help`. (optional)
 
     **Note**: `launchpad` will inherit the UCP flags which are needed by DTR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `dtr`:
-    - `--ucp-username` (inherited from UCP's `--admin-username` flag)
-    - `--ucp-password` (inherited from UCP's `--admin-password` flag)
+    - `--ucp-username` (inherited from UCP's `--admin-username` flag or `spec.ucp.adminUsername`)
+    - `--ucp-password` (inherited from UCP's `--admin-password` flag or `spec.ucp.adminPassword`)
     - `--ucp-url` (inherited from UCP's `--san` flag or intelligently selected based on other configuration variables)
 
 - `replicaConfig` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)

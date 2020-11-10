@@ -120,9 +120,9 @@ locals {
     }
     spec = {
       ucp = {
+        adminUsername = "admin"
+        adminPassword = var.admin_password
         installFlags : [
-          "--admin-username=admin",
-          "--admin-password=${var.admin_password}",
           "--default-node-orchestrator=kubernetes",
           "--san=${module.masters.lb_dns_name}",
         ]

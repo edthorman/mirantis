@@ -27,8 +27,6 @@ The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 (default: `launchpad.yaml`)
-* `--prune` - Remove nodes that are no longer in the cluster config yaml
-(default: `false`)
 * `--force` - Continue installation when prerequisite validation fails
 (default: `false`)
 
@@ -51,9 +49,8 @@ apiVersion: launchpad.mirantis.com/v1.1
 kind: DockerEnterprise
 spec:
   ucp:
-    installFlags:
-      - --admin-username="admin"
-      - --admin-password="password"
+    adminUsername: admin
+    adminPassword: password
 ```
 
 ## Reset or uninstall a cluster
