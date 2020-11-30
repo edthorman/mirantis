@@ -7,6 +7,7 @@ Optional arguments that can be used with any of the `launchpad` commands.
 
 * `--disable-telemetry` - Disables sending of analytics and telemetry data
 * `--accept-license` - Accept the [end user license agreement](https://github.com/Mirantis/launchpad/blob/master/LICENSE)
+* `--disable-upgrade-check` - Don't check for a launchpad upgrade
 * `--debug` - Increase output verbosity
 * `--help` - Display command help
 
@@ -28,6 +29,10 @@ The supported options are:
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 (default: `launchpad.yaml`)
 * `--force` - Continue installation when prerequisite validation fails
+(default: `false`)
+* `--disable-redact` - Do not hide sensitive information in the output
+(default: `false`)
+* `--confirm` - Request confirmation for every command to be run on the remote hosts
 (default: `false`)
 
 ## Download client configuration
@@ -63,6 +68,10 @@ The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 * `--force` - Required when running non-interactively (default: `false`)
+* `--disable-redact` - Do not hide sensitive information in the output
+(default: `false`)
+* `--confirm` - Request confirmation for every command to be run on the remote hosts
+(default: `false`)
 
 ## Execute a command or run a remote terminal on a host
 
@@ -86,6 +95,10 @@ The supported options are:
 The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
+* `--disable-redact` - Do not hide sensitive information in the output
+(default: `false`)
+* `--confirm` - Request confirmation for every command to be run on the remote hosts
+(default: `false`)
 * `[report name]` - Currently supported reports: `config`, `hosts`, `mke`, `msr`
 
 ## Register
