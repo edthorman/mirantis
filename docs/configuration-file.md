@@ -235,7 +235,7 @@ Specify options for the MSR cluster.
     - `--ucp-password` (inherited from MKE's `--admin-password` flag or `spec.mke.adminPassword`)
     - `--ucp-url` (inherited from MKE's `--san` flag or intelligently selected based on other configuration variables)
 
-- `replicaConfig` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)
+- `replicaIDs` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)
 
 ### `engine`
 
