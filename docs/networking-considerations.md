@@ -21,7 +21,7 @@ ssh -i /my/private/keyfile username@mynode
 $ ping 8.8.8.8
 ```
 
-Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Docker Enterprise Universal Control Plane webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (e.g., Postman, curl, etc.).
+Once you can do this, you should be able to proceed with installing Launchpad and configuring a Docker Enterprise deployment. Once completed, you should be able to use your deployer machine to access the Mirantis Kubernetes Engine webUI, run kubectl (after authenticating to your cluster) and potentially other utilities (e.g., Postman, curl, etc.).
 
 #### Using a VPN
 

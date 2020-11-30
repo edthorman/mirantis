@@ -16,7 +16,7 @@ Before following these steps, make sure your environment meets [system requireme
 To fully evaluate and use Docker Enterprise, we recommend installing Launchpad on a Linux, Mac, or Windows machine or virtual machine (VM) able to run the following.
 
 * A graphic desktop and browser, for accessing or installing:
-  * The Docker Enterprise Universal Control Plane web ui
+  * The Mirantis Kubernetes Engine web ui
   * [Lens](https://k8slens.dev/), an open source, stand-alone GUI application from Mirantis (available for Linux, Mac, and Windows) for multi-cluster management and operations
   * Metrics, observability, visualization and other tools
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), the Kubernetes command-line client
