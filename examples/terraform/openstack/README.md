@@ -16,8 +16,7 @@ This directory provides an example flow with Mirantis Launchpad together with Te
 4. Create Cloud Provider config file and configure path
 5. Configure .tfvars file with all necessary parameters
 6. `terraform apply`
-7. `terraform output mke_cluster > launchpad.yaml`
-8. `launchpad apply`
+7. `terraform output mke_cluster | launchpad apply --config -`
 
 ## Related topics
 

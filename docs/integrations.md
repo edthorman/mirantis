@@ -65,12 +65,12 @@ output "mke_cluster" {
 }
 ```
 
-To output the launchpad configuration, use:
+To run launchpad with the generated configuration, use:
 
 ```
-terraform output mke_cluster > launchpad.yaml
+terraform output mke_cluster | launchpad apply -c -
 ```
 
-You can now use the `launchpad apply` command, and Launchpad will install all the needed cluster components.
+Launchpad will install all the needed cluster components.
 
 You can see real-life examples for using Terraform with Mirantis Launchpad in [Terraform Examples](../examples/terraform/README.md).
