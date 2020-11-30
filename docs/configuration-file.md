@@ -122,7 +122,7 @@ $$var | Escape expressions. Result will be $var.
 
 ## `apiVersion`
 
-The latest API version is `launchpad.mirantis.com/v1.1`, but earlier configuration file versions should still work without changes if you do not intend to use any of the added features of the current version.
+The latest API version is `launchpad.mirantis.com/mke/v1.1`, but earlier configuration file versions should still work without changes if you do not intend to use any of the added features of the current version.
 
 ## `kind`
 
