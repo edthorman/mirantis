@@ -3,7 +3,7 @@
 # line or from environment variables.  See the following page for more info:
 # https://www.terraform.io/docs/configuration/variables.html#assigning-values-to-root-module-variables
 
-vsphere_server = "vcenter.ingen.org"
+vsphere_server = "vcenter.example.com"
 vsphere_user = "dennis.nedry"
 vsphere_password = "theM@gicW0rd"
 
@@ -15,9 +15,9 @@ network = "primary_network"
 template_vm_linux = "ubnutu-18.04"
 
 ssh_private_key_file = "./ssh_keys/id_rsa"
-ucp_admin_username = "admin"
-ucp_admin_password = "ButterF1nger$"
-ucp_lb_dns_name = "ucp.ingen.org"
+mke_admin_username = "admin"
+mke_admin_password = "ButterF1nger$"
+mke_lb_dns_name = "mke.example.com"
 
 quantity_managers = 3
 quantity_workers = 10

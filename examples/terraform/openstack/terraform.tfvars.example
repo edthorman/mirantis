@@ -1,7 +1,7 @@
-# K8s and UCP admin password
+# K8s and MKE admin password
 admin_password = "wale!wale"
 
-# SSH Private Key 
+# SSH Private Key
 ssh_key_path = "./ssh_keys/test"
 
 # Openstack provider file to access the API
@@ -18,7 +18,7 @@ docker_image_repo = "docker.io/dockereng"
 
 cluster_name = "test"
 
-# Node counts 
+# Node counts
 master_count = 3
 worker_count = 3
 

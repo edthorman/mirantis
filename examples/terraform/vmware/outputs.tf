@@ -33,15 +33,15 @@ locals {
   #   }
   # ]
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1.1"
-    kind       = "DockerEnterprise"
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke"
     spec = {
-      ucp = {
-        adminUsername = var.ucp_admin_username
-        adminPassword = var.ucp_admin_password
+      mke = {
+        adminUsername = var.mke_admin_username
+        adminPassword = var.mke_admin_password
         installFlags : [
           "--default-node-orchestrator=kubernetes",
-          "--san=${var.ucp_lb_dns_name}",
+          "--san=${var.mke_lb_dns_name}",
         ]
       }
       hosts = concat(local.managers, local.workers) #, local.windows_workers)
@@ -49,6 +49,6 @@ locals {
   }
 }
 
-output "ucp_cluster" {
+output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
 }

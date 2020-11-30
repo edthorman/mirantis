@@ -7,10 +7,10 @@ Mirantis Launchpad cluster configuration is described in YAML format. You can cr
 The complete `launchpad.yaml` file looks something like this, but with values determined by your specific configuration.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1.1
-kind: DockerEnterprise
+apiVersion: launchpad.mirantis.com/mke/v1.1
+kind: mke+msr
 metadata:
-  name: launchpad-ucp
+  name: launchpad-mke
 spec:
   hosts:
   - address: 10.0.0.1
@@ -48,7 +48,7 @@ spec:
       certPath: ~/.certs/cert.pem
       keyPath: ~/.certs/key.pem
   - address: 10.0.0.3
-    role: dtr
+    role: msr
     imageDir: ./dtr-images
     ssh:
       user: root
@@ -57,15 +57,15 @@ spec:
   - address: 127.0.0.1
     role: worker
     localhost: true
-  ucp:
+  mke:
     version: "3.3.3"
     imageRepo: "docker.io/docker"
     adminUsername: admin
-    adminPassword: "$UCP_ADMIN_PASSWORD"
+    adminPassword: "$MKE_ADMIN_PASSWORD"
     installFlags:
     - --default-node-orchestrator=kubernetes
     licenseFilePath: ./docker-enterprise.lic
-    configFile: ./ucp-config.toml
+    configFile: ./mke-config.toml
     configData: |-
       [scheduling_configuration]
         default_node_orchestrator = "kubernetes"
@@ -75,13 +75,13 @@ spec:
       configData: |-
         [Global]
         region=RegionOne
-  dtr:
+  msr:
     version: 2.8.1
     imageRepo: "docker.io/docker"
     installFlags:
     - --dtr-external-url dtr.example.com
     - --ucp-insecure-tls
-    replicaConfig: sequential
+    replicaIDs: sequential
   engine:
     version: "19.03.8"
     channel: stable
@@ -99,12 +99,12 @@ We follow Kubernetes-like versioning and grouping in launchpad configuration so 
 When reading the configuration file, launchpad will replace any strings starting with a dollar sign with values from the local host's environment variables. Example:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1.1
-kind: DockerEnterprise
+apiVersion: launchpad.mirantis.com/mke/v1.1
+kind: mke
 spec:
-  ucp:
+  mke:
     installFlags:
-    - --admin-password="$UCP_ADMIN_PASSWORD"
+    - --admin-password="$MKE_ADMIN_PASSWORD"
 ```
 
 Very simple bash-like expressions are supported:
@@ -126,7 +126,7 @@ The latest API version is `launchpad.mirantis.com/v1.1`, but earlier configurati
 
 ## `kind`
 
-Currently only `DockerEnterprise` is supported.
+Currently `mke` and `mke+msr` are supported. In future releases you may have to use `mke+msr` when the configuration contains MSR elements, for now it's informational.
 
 ## `metadata`
 
@@ -147,7 +147,7 @@ interface (default: `eth0`)
 - `role` - Role of the machine in the cluster. Possible values are:
    - `manager`
    - `worker`
-   - `dtr`
+   - `msr`
 - `environment` - Key - value pairs in YAML mapping syntax. Values are updated to host environment (optional)
 - `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json` (optional)
 - `hooks` - [Hooks](#hooks) configuration for running commands before or after stages (optional)
@@ -198,42 +198,42 @@ Host hooks can be used to have launchpad run commands on the host before or afte
 - `before`- A list of commands to run on the host before the "Uninstall" phase (optional)
 - `after`- A list of commands to run on the host before the "Disconnect" phase when the reset was succesful (optional)
 
-### `ucp`
+### `mke`
 
-Specify options for the UCP cluster itself.
+Specify options for the MKE cluster itself.
 
-- `version` - Which version of UCP we should install or upgrade to (default `3.3.0`)
-- `imageRepo` - Which image repository we should use for UCP installation (default `docker.io/docker`)
-- `adminUsername` - UCP administrator username (default: `admin`)
-- `adminPassword`- UCP administrator password (default: auto-generate)
-- `installFlags` - Custom installation flags for UCP installation. You can get a list of supported installation options for a specific UCP version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
+- `version` - Which version of MKE we should install or upgrade to (default `3.3.3`)
+- `imageRepo` - Which image repository we should use for MKE installation (default `docker.io/docker`)
+- `adminUsername` - MKE administrator username (default: `admin`)
+- `adminPassword`- MKE administrator password (default: auto-generate)
+- `installFlags` - Custom installation flags for MKE installation. You can get a list of supported installation options for a specific MKE version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
 - `licenseFilePath` - Optional. A path to Docker Enterprise license file.
 - `configFile` - Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html).
 - `configData` -  Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html) in embedded "heredocs" way. Heredocs allows you to define a mulitiline string while maintaining the original formatting and indenting
 - `cloud` - Optional. Cloud provider configuration
 
-**Note:** The UCP installer will automatically generate an administrator password unless provided and it will be displayed in clear text in the output and persisted in the logs. The automatically generated password must be configured in the `launchpad.yaml` for any subsequent runs or they will fail.
+**Note:** The MKE installer will automatically generate an administrator password unless provided and it will be displayed in clear text in the output and persisted in the logs. The automatically generated password must be configured in the `launchpad.yaml` for any subsequent runs or they will fail.
 
 #### `cloud`
 
 Cloud provider configuration.
 
-- `provider` - Provider name (currently aws, azure and openstack (UCP 3.3.3+) are supported) (optional)
+- `provider` - Provider name (currently aws, azure and openstack (MKE 3.3.3+) are supported) (optional)
 - `configFile` - Path to cloud provider configuration file on local machine (optional)
 - `configData` - Inlined cloud provider configuration (optional)
 
-### `dtr`
+### `msr`
 
-Specify options for the DTR cluster.
+Specify options for the MSR cluster.
 
-- `version` - Which version of DTR we should install or upgrade to (default `2.8.1`)
-- `imageRepo` - Which image repository we should use for DTR installation (default `docker.io/docker`)
-- `installFlags` - Custom installation flags for DTR installation.  You can get a list of supported installation options for a specific DTR version by running the installer container with `docker run -t -i --rm docker/dtr:2.8.1 install --help`. (optional)
+- `version` - Which version of MSR we should install or upgrade to (default `2.8.3`)
+- `imageRepo` - Which image repository we should use for MSR installation (default `docker.io/mirantis`)
+- `installFlags` - Custom installation flags for MSR installation.  You can get a list of supported installation options for a specific MSR version by running the installer container with `docker run -t -i --rm mirantis/dtr:2.8.3 install --help`. (optional)
 
-    **Note**: `launchpad` will inherit the UCP flags which are needed by DTR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `dtr`:
-    - `--ucp-username` (inherited from UCP's `--admin-username` flag or `spec.ucp.adminUsername`)
-    - `--ucp-password` (inherited from UCP's `--admin-password` flag or `spec.ucp.adminPassword`)
-    - `--ucp-url` (inherited from UCP's `--san` flag or intelligently selected based on other configuration variables)
+    **Note**: `launchpad` will inherit the MKE flags which are needed by MSR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `msr`:
+    - `--ucp-username` (inherited from MKE's `--admin-username` flag or `spec.mke.adminUsername`)
+    - `--ucp-password` (inherited from MKE's `--admin-password` flag or `spec.mke.adminPassword`)
+    - `--ucp-url` (inherited from MKE's `--san` flag or intelligently selected based on other configuration variables)
 
 - `replicaConfig` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)
 
@@ -241,7 +241,7 @@ Specify options for the DTR cluster.
 
  Specify options for Docker Engine - Enterprise to be installed
 
-- `version` - The version of engine that you want to install or upgraded to. (default `19.03.8`)
+- `version` - The version of engine that you want to install or upgraded to. (default `19.03.12`)
 - `channel` - Installation channel to use. One of `test` or `prod` (optional)
 - `repoURL` - Repository URL to use for engine installation. (optional)
 - `installURLLinux` - Where to download the initial installer script for linux hosts. Local paths can also be used. (default: `https://get.mirantis.com/`)

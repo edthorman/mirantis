@@ -6,12 +6,12 @@ Mirantis Launchpad is a static binary that works on following operating systems:
 * MacOS (x64)
 * Windows (x64)
 
-## UCP requirements
-In addition to the requirement for running Launchpad, you must also meet the system requirements for UCP.
+## MKE requirements
+In addition to the requirement for running Launchpad, you must also meet the system requirements for MKE.
 
-### Supported Operating Systems for UCP
+### Supported Operating Systems for MKE
 
-UCP can be installed on the following operating systems. 
+MKE can be installed on the following operating systems.
 
 * CentOS 7
 * CentOS 8
@@ -77,9 +77,9 @@ ssh --% Administrator@1.2.1.2 powershell -c $ConfirmPreference = 'None'; Repair-
 
 ##### WinRM
 
-As an alternative to SSH, you can use [WinRM](https://docs.microsoft.com/en-us/windows/win32/winrm/portal) can be also used on Windows hosts as an alternative to SSH. 
+As an alternative to SSH, you can use [WinRM](https://docs.microsoft.com/en-us/windows/win32/winrm/portal) can be also used on Windows hosts as an alternative to SSH.
 
 ### Ports Used
 
-When installing a UCP cluster, a series of ports need to be opened to incoming traffic. See [UCP documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/install-ucp.html#ports-used) for more details.
+When installing a MKE cluster, a series of ports need to be opened to incoming traffic. See [MKE documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/install-ucp.html#ports-used) for more details.
 

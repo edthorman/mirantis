@@ -32,8 +32,8 @@ The supported options are:
 
 ## Download client configuration
 
-The UCP client bundle contains a private and public key pair that authorizes
-Launchpad to interact with the [UCP CLI](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/user-access.html#cli-access).
+The MKE client bundle contains a private and public key pair that authorizes
+Launchpad to interact with the [MKE CLI](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/user-access.html#cli-access).
 
 `launchpad client-config`
 
@@ -42,20 +42,20 @@ The supported options are:
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 (default: `launchpad.yaml`)
 
-**Note:** The configuration must include the UCP credentials, example:
+**Note:** The configuration must include the MKE credentials, example:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1.1
-kind: DockerEnterprise
+apiVersion: launchpad.mirantis.com/mke/v1.1
+kind: mke
 spec:
-  ucp:
+  mke:
     adminUsername: admin
     adminPassword: password
 ```
 
 ## Reset or uninstall a cluster
 
-To reset or uninstall a UCP cluster.
+To reset or uninstall an MKE cluster.
 
 `launchpad reset`
 
@@ -86,7 +86,7 @@ The supported options are:
 The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
-* `[report name]` - Currently supported reports: `hosts`, `ucp`, `dtr`
+* `[report name]` - Currently supported reports: `config`, `hosts`, `mke`, `msr`
 
 ## Register
 

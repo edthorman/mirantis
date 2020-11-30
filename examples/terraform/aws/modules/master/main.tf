@@ -1,6 +1,6 @@
 resource "aws_security_group" "master" {
   name        = "${var.cluster_name}-managers"
-  description = "ucp cluster managers"
+  description = "mke cluster managers"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -30,7 +30,7 @@ locals {
 }
 
 
-resource "aws_instance" "ucp_master" {
+resource "aws_instance" "mke_master" {
   count = var.master_count
 
   tags = map(
@@ -65,7 +65,7 @@ EOF
   }
 }
 
-resource "aws_lb" "ucp_master" {
+resource "aws_lb" "mke_master" {
   name               = "${var.cluster_name}-master-lb"
   internal           = false
   load_balancer_type = "network"
@@ -76,52 +76,52 @@ resource "aws_lb" "ucp_master" {
   }
 }
 
-resource "aws_lb_target_group" "ucp_master_api" {
+resource "aws_lb_target_group" "mke_master_api" {
   name     = "${var.cluster_name}-api"
   port     = 443
   protocol = "TCP"
   vpc_id   = var.vpc_id
 }
 
-resource "aws_lb_listener" "ucp_master_api" {
-  load_balancer_arn = aws_lb.ucp_master.arn
+resource "aws_lb_listener" "mke_master_api" {
+  load_balancer_arn = aws_lb.mke_master.arn
   port              = 443
   protocol          = "TCP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.ucp_master_api.arn
+    target_group_arn = aws_lb_target_group.mke_master_api.arn
     type             = "forward"
   }
 }
 
-resource "aws_lb_target_group_attachment" "ucp_master_api" {
+resource "aws_lb_target_group_attachment" "mke_master_api" {
   count            = var.master_count
-  target_group_arn = aws_lb_target_group.ucp_master_api.arn
-  target_id        = aws_instance.ucp_master[count.index].id
+  target_group_arn = aws_lb_target_group.mke_master_api.arn
+  target_id        = aws_instance.mke_master[count.index].id
   port             = 443
 }
 
-resource "aws_lb_target_group" "ucp_kube_api" {
+resource "aws_lb_target_group" "mke_kube_api" {
   name     = "${var.cluster_name}-kube-api"
   port     = 6443
   protocol = "TCP"
   vpc_id   = var.vpc_id
 }
 
-resource "aws_lb_listener" "ucp_kube_api" {
-  load_balancer_arn = aws_lb.ucp_master.arn
+resource "aws_lb_listener" "mke_kube_api" {
+  load_balancer_arn = aws_lb.mke_master.arn
   port              = 6443
   protocol          = "TCP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.ucp_kube_api.arn
+    target_group_arn = aws_lb_target_group.mke_kube_api.arn
     type             = "forward"
   }
 }
 
-resource "aws_lb_target_group_attachment" "ucp_kube_api" {
+resource "aws_lb_target_group_attachment" "mke_kube_api" {
   count            = var.master_count
-  target_group_arn = aws_lb_target_group.ucp_kube_api.arn
-  target_id        = aws_instance.ucp_master[count.index].id
+  target_group_arn = aws_lb_target_group.mke_kube_api.arn
+  target_id        = aws_instance.mke_master[count.index].id
   port             = 6443
 }

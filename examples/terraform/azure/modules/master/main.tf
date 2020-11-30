@@ -77,18 +77,18 @@ resource "azurerm_network_security_rule" "master_6443" {
 # Master LB
 #####
 resource "azurerm_lb" "master_public_lb" {
-  name                = format("%s-ucp-LB", var.cluster_name)
+  name                = format("%s-mke-LB", var.cluster_name)
   location            = var.location
   resource_group_name = var.rg
 
   frontend_ip_configuration {
-    name                 = "ucp-LB-FrontendIP"
-    public_ip_address_id = join("", azurerm_public_ip.ucp_lb_pub_ip.*.id)
+    name                 = "mke-LB-FrontendIP"
+    public_ip_address_id = join("", azurerm_public_ip.mke_lb_pub_ip.*.id)
   }
 
   tags = merge(
     map(
-      "Name", format("%s-ucp-LB", var.cluster_name),
+      "Name", format("%s-mke-LB", var.cluster_name),
       "Environment", format("%s", var.rg)
     ),
     var.tags
@@ -96,35 +96,35 @@ resource "azurerm_lb" "master_public_lb" {
 }
 
 # create the load balancer backend pool
-resource "azurerm_lb_backend_address_pool" "ucp_lb_be_pool" {
-  name                = "${var.cluster_name}-ucp-be-pool"
+resource "azurerm_lb_backend_address_pool" "mke_lb_be_pool" {
+  name                = "${var.cluster_name}-mke-be-pool"
   resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
 }
 
 # Associate the provided network interfaces with this backend pool
-resource "azurerm_network_interface_backend_address_pool_association" "ucp_lb_be_pool_assoc" {
+resource "azurerm_network_interface_backend_address_pool_association" "mke_lb_be_pool_assoc" {
   count                   = length(azurerm_network_interface.netif_public)
   network_interface_id    = azurerm_network_interface.netif_public[count.index].id
   ip_configuration_name   = format("%s-master-Net-%s", var.cluster_name, count.index + 1)
-  backend_address_pool_id = azurerm_lb_backend_address_pool.ucp_lb_be_pool.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.mke_lb_be_pool.id
 }
 
 # Add a health check probe for the backend instances
-resource "azurerm_lb_probe" "ucp_lb_probe_443" {
+resource "azurerm_lb_probe" "mke_lb_probe_443" {
   resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
-  name                = "probe_ucp_443"
+  name                = "probe_mke_443"
   protocol            = "TCP"
   port                = 443
   interval_in_seconds = 5
   number_of_probes    = 2
 }
 
-resource "azurerm_lb_probe" "ucp_lb_probe_6443" {
+resource "azurerm_lb_probe" "mke_lb_probe_6443" {
   resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
-  name                = "probe_ucp_6443"
+  name                = "probe_mke_6443"
   protocol            = "TCP"
   port                = 6443
   interval_in_seconds = 5
@@ -132,46 +132,46 @@ resource "azurerm_lb_probe" "ucp_lb_probe_6443" {
 }
 
 # Add rules for the master loadbalancer
-resource "azurerm_lb_rule" "ucp_lb_rule_443" {
+resource "azurerm_lb_rule" "mke_lb_rule_443" {
   resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.master_public_lb.id
-  name                           = format("%s-ucp-443-443", var.cluster_name)
+  name                           = format("%s-mke-443-443", var.cluster_name)
   protocol                       = "TCP"
   frontend_port                  = 443
   backend_port                   = 443
-  frontend_ip_configuration_name = "ucp-LB-FrontendIP"
+  frontend_ip_configuration_name = "mke-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.ucp_lb_be_pool.id
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.mke_lb_be_pool.id
   idle_timeout_in_minutes        = 5
-  probe_id                       = azurerm_lb_probe.ucp_lb_probe_443.id
+  probe_id                       = azurerm_lb_probe.mke_lb_probe_443.id
 }
 
-resource "azurerm_lb_rule" "ucp_lb_rule_6443" {
+resource "azurerm_lb_rule" "mke_lb_rule_6443" {
   resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.master_public_lb.id
-  name                           = format("%s-ucp-6443-6443", var.cluster_name)
+  name                           = format("%s-mke-6443-6443", var.cluster_name)
   protocol                       = "TCP"
   frontend_port                  = 6443
   backend_port                   = 6443
-  frontend_ip_configuration_name = "ucp-LB-FrontendIP"
+  frontend_ip_configuration_name = "mke-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.ucp_lb_be_pool.id
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.mke_lb_be_pool.id
   idle_timeout_in_minutes        = 5
-  probe_id                       = azurerm_lb_probe.ucp_lb_probe_6443.id
+  probe_id                       = azurerm_lb_probe.mke_lb_probe_6443.id
 }
 
 # Add public ip for master loadbalancer
-resource "azurerm_public_ip" "ucp_lb_pub_ip" {
-  name                = "ucp-LB-FrontendIP"
+resource "azurerm_public_ip" "mke_lb_pub_ip" {
+  name                = "mke-LB-FrontendIP"
   location            = var.location
   resource_group_name = var.rg
 
   allocation_method = "Static"
-  domain_name_label = format("ucp-%s-%s", lower(replace(var.rg, "/[^a-zA-Z0-9]/", "")), lower(random_string.pub_ip_salt[0].result))
+  domain_name_label = format("mke-%s-%s", lower(replace(var.rg, "/[^a-zA-Z0-9]/", "")), lower(random_string.pub_ip_salt[0].result))
 
   tags = merge(
     map(
-      "Name", "ucp-LB-FrontendIP",
+      "Name", "mke-LB-FrontendIP",
       "Environment", format("%s", var.rg)
     ),
     var.tags
@@ -259,7 +259,7 @@ resource "azurerm_availability_set" "master_avset" {
 #####
 # Master VMs
 #####
-resource "azurerm_virtual_machine" "ucp_master" {
+resource "azurerm_virtual_machine" "mke_master" {
   count = var.master_count
 
   name                = format("%s%03d", "master-", (count.index + 1))

@@ -15,7 +15,7 @@ variable "ssh_user" {
 }
 
 variable "cluster_name" {
-  default = "ucp"
+  default = "mke"
 }
 
 variable "location" {
@@ -68,8 +68,8 @@ resource "hcloud_server" "worker" {
 
 locals {
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1.1"
-    kind       = "DockerEnterprise"
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke"
     spec = {
       hosts = [
         for host in concat(hcloud_server.master, hcloud_server.worker) : {
@@ -84,6 +84,6 @@ locals {
   }
 }
 
-output "ucp_cluster" {
+output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
 }

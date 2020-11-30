@@ -1,5 +1,5 @@
 output "lb_dns_name" {
-  value = azurerm_public_ip.ucp_lb_pub_ip.fqdn
+  value = azurerm_public_ip.mke_lb_pub_ip.fqdn
 }
 
 output "public_ips" {
@@ -7,5 +7,5 @@ output "public_ips" {
 }
 
 output "machines" {
-  value = azurerm_virtual_machine.ucp_master
+  value = azurerm_virtual_machine.mke_master
 }

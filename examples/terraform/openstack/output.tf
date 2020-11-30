@@ -44,13 +44,13 @@ locals {
     }
   ]
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1.1"
-    kind = "DockerEnterprise"
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind = "mke"
     metadata = {
-      name = "ucpcluster"
+      name = "mkecluster"
     }
     spec = {
-      ucp = {
+      mke = {
         version = var.docker_enterprise_version
         imageRepo = var.docker_image_repo
         adminUsername = "admin"
@@ -74,6 +74,6 @@ locals {
   }
 }
 
-output "ucp_cluster" {
+output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
 }

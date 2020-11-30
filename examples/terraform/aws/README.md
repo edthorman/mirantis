@@ -1,4 +1,4 @@
-# Bootstrapping UCP cluster on AWS
+# Bootstrapping MKE cluster on AWS
 
 This directory provides an example flow for using Mirantis Launchpad with Terraform and AWS.
 
@@ -12,5 +12,5 @@ This directory provides an example flow for using Mirantis Launchpad with Terraf
 1. Create terraform.tfvars file with needed details. You can use the provided terraform.tfvars.example as a baseline.
 2. `terraform init`
 3. `terraform apply`
-4. `terraform output ucp_cluster > launchpad.yaml`
+4. `terraform output mke_cluster > launchpad.yaml`
 5. `launchpad apply`

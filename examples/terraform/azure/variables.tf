@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  default = "ucp"
+  default = "mke"
 }
 
 variable "azure_region" {

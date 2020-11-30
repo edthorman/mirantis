@@ -1,6 +1,6 @@
 ssh_keys = ["you@domain.com"]
 hcloud_token = "your-api-token"
-cluster_name = "ucp"
+cluster_name = "mke"
 location = "hel1"
 image = "ubuntu-18.04"
 master_type = "cx31"

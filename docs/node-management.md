@@ -12,11 +12,11 @@ Swarm manager nodes use the Raft Consensus Algorithm to manage the swarm state. 
 
 3. Manager nodes also host the control plane `etcd` cluster. Making changes to the cluster requires a working `etcd` cluster with the majority of peers present and working.
 
-4. It is highly advisable to run an odd number of peers in quorum-based systems. UCP only works when a majority can be formed, so after you add more than than one node, you can't (automatically) go back to having only one node.
+4. It is highly advisable to run an odd number of peers in quorum-based systems. MKE only works when a majority can be formed, so after you add more than than one node, you can't (automatically) go back to having only one node.
 
 ## Adding Manager Nodes
 
-Adding manager nodes is as simple as adding them to `launchpad.yaml`. Re-running `launchpad apply` will configure UCP on the new node and also makes necessary changes in the swarm & etcd cluster.
+Adding manager nodes is as simple as adding them to `launchpad.yaml`. Re-running `launchpad apply` will configure MKE on the new node and also makes necessary changes in the swarm & etcd cluster.
 
 ## Removing Manager Nodes
 
@@ -48,30 +48,30 @@ Removing a worker node is a multi-step process:
 3. Run `launchpad apply`
 4. Terminate/remove the node in your infrastructure
 
-## Notes on DTR Nodes
+## Notes on MSR Nodes
 
-Docker Trusted Registry (DTR) nodes are identical to worker nodes. They participate in the UCP swarm but should not be used as traditional worker nodes for both DTR and cluster workloads. By default, UCP will prevent scheduling of containers on DTR nodes.
+Mirantis Secure Registry (MSR) nodes are identical to worker nodes. They participate in the MKE swarm but should not be used as traditional worker nodes for both MSR and cluster workloads. By default, MKE will prevent scheduling of containers on MSR nodes.
 
-DTR forms it's own cluster and quorum in addition to the swarm formed by UCP. It is best practice to limit DTR nodes to 5, but there is no limit on the amount of DTR nodes that can be configured. Just like manager nodes, the decision about how many nodes to implement is a trade-off between performance and fault-tolerance. A larger amount of nodes added can incur severe performance penalties.
+MSR forms it's own cluster and quorum in addition to the swarm formed by MKE. It is best practice to limit MSR nodes to 5, but there is no limit on the amount of MSR nodes that can be configured. Just like manager nodes, the decision about how many nodes to implement is a trade-off between performance and fault-tolerance. A larger amount of nodes added can incur severe performance penalties.
 
-The quorum formed by DTR utilizes RethinkDB which, just like swarm, uses the Raft Consensus Algorithm.
+The quorum formed by MSR utilizes RethinkDB which, just like swarm, uses the Raft Consensus Algorithm.
 
-## Adding DTR Nodes
+## Adding MSR Nodes
 
-Adding DTR nodes is as simple as adding them into the `launchpad.yaml` file with a host role of `dtr`. When you add a DTR node, specify both the `adminUsername` and `adminPassword` in the `spec.ucp` section of `launchpad.yaml` so that DTR knows the admin credentials to use:
+Adding MSR nodes is as simple as adding them into the `launchpad.yaml` file with a host role of `msr`. When you add an MSR node, specify both the `adminUsername` and `adminPassword` in the `spec.mke` section of `launchpad.yaml` so that MSR knows the admin credentials to use:
 
 ```
 spec:
-  ucp:
+  mke:
     adminUsername: admin
     adminPassword: passw0rd!
 ```
 
 Next, re-run `launchpad apply` which will configure everything on the new node and join it into the cluster.
 
-## Removing DTR Nodes
+## Removing MSR Nodes
 
-Removing a DTR node is currently a multi step process:
+Removing an MSR node is currently a multi step process:
 
 1. Remove the host from `launchpad.yaml`.
 2. Change the `prune` setting to `true` in `spec.cluster.prune`, see example above.

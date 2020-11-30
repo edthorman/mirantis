@@ -44,10 +44,10 @@ locals {
     }
   ]
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1.1"
-    kind       = "DockerEnterprise"
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke"
     spec = {
-      ucp = {
+      mke = {
         adminUsername = "admin"
         adminPassword = var.admin_password
         installFlags : [
@@ -60,7 +60,7 @@ locals {
   }
 }
 
-output "ucp_cluster" {
+output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
 }
 ```
@@ -68,7 +68,7 @@ output "ucp_cluster" {
 To output the launchpad configuration, use:
 
 ```
-terraform output ucp_cluster > launchpad.yaml
+terraform output mke_cluster > launchpad.yaml
 ```
 
 You can now use the `launchpad apply` command, and Launchpad will install all the needed cluster components.

@@ -5,6 +5,6 @@ Working examples for using Terraform with Mirantis Launchpad. The scripts are pr
 
 * [AWS](aws/README.md), a complete infrastructure example including VPC, LB, security groups, and other settings.
 * [Azure](azure/README.md), a complete example including VNET, LB, network security rules, and other settings.
-* [Hetzner](hetzner/README.md), a simple example with just a couple of VMs provisioned for a UCP cluster.
+* [Hetzner](hetzner/README.md), a simple example with just a couple of VMs provisioned for an MKE cluster.
 * [OpenStack](openstack/README.md), a simple example with basic settings.
 * [VMware](vmware/README.md), a simple example using existing vSphere network.

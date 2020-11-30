@@ -39,30 +39,30 @@ variable "ssh_private_key_file" {
   description = "Private key for SSH connections to created virtual machines; currently all machines must use the same key"
 }
 
-variable "ucp_admin_username" {
-  description = "Desired username for the UCP admin account"
+variable "mke_admin_username" {
+  description = "Desired username for the MKE admin account"
   default     = "admin"
 }
 
-variable "ucp_admin_password" {
-  description = "Desired password for the UCP admin account"
+variable "mke_admin_password" {
+  description = "Desired password for the MKE admin account"
 }
 
-variable "ucp_lb_dns_name" {
-  description = "DNS name of the UCP load balancer"
+variable "mke_lb_dns_name" {
+  description = "DNS name of the MKE load balancer"
 }
 
 variable "quantity_managers" {
-  description = "Number of UCP manager VMs to create"
+  description = "Number of MKE manager VMs to create"
   default     = 3
 }
 
 variable "quantity_workers" {
-  description = "Number of UCP worker VMs to create"
+  description = "Number of MKE worker VMs to create"
   default     = 3
 }
 
 # variable "quantity_workers_windows" {
-#   description = "Number of UCP worker VMs to create (Windows)"
+#   description = "Number of MKE worker VMs to create (Windows)"
 #   default = 0
 # }

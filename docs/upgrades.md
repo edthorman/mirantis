@@ -7,10 +7,10 @@ Mirantis Launchpad allows users to upgrade their clusters with the `launchpad ap
 To upgrade Docker Engine - Enterprise, change the engine version in the `launchpad.yaml` file.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1.1
-kind: DockerEnterprise
+apiVersion: launchpad.mirantis.com/mke/v1.1
+kind: mke
 metadata:
-  name: launchpad-ucp
+  name: launchpad-mke
 spec:
   hosts:
   - address: 10.0.0.1
@@ -26,23 +26,25 @@ After you update `launchpad.yaml`, you can run `launchpad apply`. Launchpad will
 
 3. 10% of worker nodes are updated at a time until all of the worker nodes are running the new version of engine.
 
-## Upgrading UCP or DTR
+## Upgrading MKE, MSR or Docker Engine - Enterprise
 
-When a newer version of UCP or DTR is available you can upgrade to it by changing the version tags in the `launchpad.yaml`:
+When a newer version of MKE, MSR or Docker Engine - Enterprise is available you can upgrade to it by changing the version tags in the `launchpad.yaml`:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/v1.1
-kind: DockerEnterprise
+apiVersion: launchpad.mirantis.com/mke/v1.1
+kind: mke+msr
 metadata:
-  name: launchpad-ucp
+  name: launchpad-mke
 spec:
   hosts:
   - address: 10.0.0.1
     role: manager
-  ucp:
+  mke:
     version: 3.3.1
-  dtr:
+  msr:
     version: 2.8.1
+  engine:
+    version: 19.03.12
 ```
 
 1. Update the version tags and save `launchpad.yaml`.
@@ -53,11 +55,11 @@ spec:
 
 4. Launchpad upgrades each node as described in the "Upgrading Docker Engine - Enterprise" section. This may take several minutes.
 
-**Note:** UCP and DTR upgrade paths require consecutive minor versions. For example, you cannot upgrade from UCP 3.1.0 to 3.3.0; you must upgrade from UCP 3.1.0 to 3.2.0 first.
+**Note:** MKE and MSR upgrade paths require consecutive minor versions. For example, you cannot upgrade from MKE 3.1.0 to 3.3.0; you must upgrade from MKE 3.1.0 to 3.2.0 first.
 
-## Upgrading Docker Engine - Enterprise, UCP, and DTR together
+## Upgrading Docker Engine - Enterprise, MKE, and MSR together
 
-You can upgrade all of the components -- engine, UCP, and DTR -- at the same time.
+You can upgrade all of the components -- engine, MKE, and MSR -- at the same time.
 
 1. Update `launchpad.yaml`, as shown in the previous sections.
 
@@ -65,6 +67,6 @@ You can upgrade all of the components -- engine, UCP, and DTR -- at the same tim
 
 3. Launchpad upgrades the engines on all the nodes as described in the "Upgrading Docker Engine - Enterprise" section.
 
-4. Launchpad upgrades UCP on all nodes.
+4. Launchpad upgrades MKE on all nodes.
 
-5. Launchpad upgrades DTR.
+5. Launchpad upgrades MSR.

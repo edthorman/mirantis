@@ -92,10 +92,10 @@ locals {
     }
   ]
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/v1.1"
-    kind       = "DockerEnterprise"
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke"
     spec = {
-      ucp = {
+      mke = {
         adminUsername = "admin"
         adminPassword = var.admin_password
         installFlags : [
@@ -108,6 +108,6 @@ locals {
   }
 }
 
-output "ucp_cluster" {
+output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
 }

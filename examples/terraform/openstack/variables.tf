@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  default = "ucp"
+  default = "mke"
 }
 
 variable "docker_enterprise_version" {
@@ -51,7 +51,7 @@ variable "region" {
 }
 
 variable "admin_password" {
-  default = "ucp-ftw!!!"
+  default = "mke-ftw!!!"
 }
 
 variable "docker_int_net" {
