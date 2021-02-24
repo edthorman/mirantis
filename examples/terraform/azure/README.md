@@ -6,6 +6,12 @@ This directory provides an example flow for using Mirantis Launchpad with Terraf
 
 * An account and credentials for Azure.
 * Terraform [installed](https://learn.hashicorp.com/terraform/getting-started/install)
+* The Terraform `azurerm` provider requires a number of environment variables to be set. Please refer to the [Terraform Azure Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) documentation for more details. The minimum required environment variables for this example are:
+
+  * ARM_CLIENT_ID
+  * ARM_CLIENT_SECRET
+  * ARM_SUBSCRIPTION_ID
+  * ARM_TENANT_ID
 
 ## Steps
 
