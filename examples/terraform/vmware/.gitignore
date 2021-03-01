@@ -1,4 +1,0 @@
-.terraform/
-cluster.yaml
-terraform.tfstate*
-*.tfvars

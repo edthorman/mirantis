@@ -1,0 +1,7 @@
+cluster.yaml
+launchpad.yaml
+ssh_keys/
+.terraform/
+*terraform.tfstate*
+*.tfvars
+.terraform.lock.hcl
