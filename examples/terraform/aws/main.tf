@@ -58,8 +58,8 @@ module "windows_workers" {
 locals {
   managers = [
     for host in module.masters.machines : {
-      address = host.public_ip
       ssh = {
+        address = host.public_ip
         user    = "ubuntu"
         keyPath = "./ssh_keys/${var.cluster_name}.pem"
       }
@@ -69,8 +69,8 @@ locals {
   ]
   workers = [
     for host in module.workers.machines : {
-      address = host.public_ip
       ssh = {
+        address = host.public_ip
         user    = "ubuntu"
         keyPath = "./ssh_keys/${var.cluster_name}.pem"
       }
@@ -80,8 +80,8 @@ locals {
   ]
   windows_workers = [
     for host in module.windows_workers.machines : {
-      address = host.public_ip
       winRM = {
+        address = host.public_ip
         user     = "Administrator"
         password = var.windows_administrator_password
         useHTTPS = true

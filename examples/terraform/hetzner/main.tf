@@ -68,13 +68,13 @@ resource "hcloud_server" "worker" {
 
 locals {
   launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    apiVersion = "launchpad.mirantis.com/mke/v1.3"
     kind       = "mke"
     spec = {
       hosts = [
         for host in concat(hcloud_server.master, hcloud_server.worker) : {
-          address = host.ipv4_address
           ssh = {
+            address = host.ipv4_address
             user = "root"
           }
           role = host.labels.role
