@@ -33,13 +33,13 @@ This can be done by defining Docker engine configuration in launchpad.yaml, for 
 
 spec:
   hosts:
-  - address: 192.168.110.100
-    role: manager
+  - role: manager
     ssh:
+      address: 192.168.110.100
       keyPath: ~/.ssh/id_rsa
       user: theuser
     privateInterface: enp0s3
-    engineConfig:
+    mcrConfig:
       log-driver: json-file
       log-opts:
         max-size: "10m"

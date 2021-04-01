@@ -80,7 +80,7 @@ The cluster is configured using [a yaml file](configuration-file.md). In this ex
 Open up your favorite editor, and type something similar to the example below. Once done, save the file as `launchpad.yaml`. Adjust the example below to meet your infrastructure requirements. This model should work to deploy hosts on most public clouds.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/mke/v1.1
+apiVersion: launchpad.mirantis.com/mke/v1.3
 kind: mke
 metadata:
   name: mke-kube
@@ -91,20 +91,20 @@ spec:
     installFlags:
     - --default-node-orchestrator=kubernetes
   hosts:
-  - address: 172.16.33.100
-    role: manager
+  - role: manager
     ssh:
+      address: 172.16.33.100
       keyPath: ~/.ssh/my_key
-  - address: 172.16.33.101
-    role: worker
+  - role: worker
     ssh:
+      address: 172.16.33.101
       keyPath: ~/.ssh/my_key
 ```
 
 If you're deploying on VirtualBox or other desktop virtualization solution and are using ‘bridged’ networking, you’ll need to make a few minor adjustments to your launchpad.yaml (see below) — deliberately setting a –pod-cidr to ensure that pod IP addresses don’t overlap with node IP addresses (the latter are in the 192.168.x.x private IP network range on such a setup), and supplying appropriate labels for the target nodes’ private IP network cards using the privateInterface parameter (this typically defaults to ‘enp0s3’ on Ubuntu 18.04 &mdash; other Linux distributions use similar nomenclature). You may also need to set the username to use for logging into the host.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/mke/v1.1
+apiVersion: launchpad.mirantis.com/mke/v1.3
 kind: mke
 metadata:
   name: my-mke
@@ -116,15 +116,15 @@ spec:
       - --default-node-orchestrator=kubernetes
       - --pod-cidr 10.0.0.0/16
   hosts:
-  - address: 192.168.110.100
-    role: manager
+  - role: manager
     ssh:
+      address: 192.168.110.100
       keyPath: ~/.ssh/id_rsa
       user: theuser
     privateInterface: enp0s3
-  - address: 192.168.110.101
-    role: worker
+  - role: worker
     ssh:
+      address: 192.168.110.101
       keyPath: ~/.ssh/id_rsa
       user: theuser
     privateInterface: enp0s3

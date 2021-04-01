@@ -29,8 +29,8 @@ A more secure way to manage networking is to connect your deployer machine to yo
 
 #### More deliberate network security
 
-If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. See [MKE documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/install-ucp.html#ports-used) for more details.
+If you intend to deploy a cluster for longer-term evaluation, it makes sense to secure it more deliberately. In this case, a certain range of ports will need to be opened on hosts. See [MKE documentation](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/install-mke.html#ports-used) for more details.
 
 #### Using DNS
 
-Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See [MKE documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/add-sans-to-cluster-certs.html) for more information.
+Launchpad can deploy certificate bundles obtained from a certificate provider to authenticate your cluster. These can be used in combination with DNS to let you reach your cluster securely on a fully-qualified domain name (FQDN). See [MKE documentation](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/mke-configure/add-sans-to-cluster-certs.html) for more information.

@@ -15,9 +15,14 @@ MKE can be installed on the following operating systems.
 
 * CentOS 7
 * CentOS 8
-* Ubuntu 18.04.x
-* Redhat Enterprise Linux 7.x
-* Redhat Enterprise Linux 8.x
+* Oracle Linux 7
+* Oracle Linux 8
+* Redhat Enterprise Linux 7
+* Redhat Enterprise Linux 8
+* SUSE Linux Enterprise Server 12
+* SUSE Linux Enterprise Server 15
+* Ubuntu 18.04
+* Ubuntu 20.04
 * Windows Server 2019
 
 ### Hardware Requirements
@@ -81,5 +86,5 @@ As an alternative to SSH, you can use [WinRM](https://docs.microsoft.com/en-us/w
 
 ### Ports Used
 
-When installing a MKE cluster, a series of ports need to be opened to incoming traffic. See [MKE documentation](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/install-ucp.html#ports-used) for more details.
+When installing a MKE cluster, a series of ports need to be opened to incoming traffic. See [MKE documentation](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/install-mke.html#ports-used) for more details.
 

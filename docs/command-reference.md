@@ -30,15 +30,11 @@ The supported options are:
 (default: `launchpad.yaml`)
 * `--force` - Continue installation when prerequisite validation fails
 (default: `false`)
-* `--disable-redact` - Do not hide sensitive information in the output
-(default: `false`)
-* `--confirm` - Request confirmation for every command to be run on the remote hosts
-(default: `false`)
 
 ## Download client configuration
 
 The MKE client bundle contains a private and public key pair that authorizes
-Launchpad to interact with the [MKE CLI](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/user-access.html#cli-access).
+Launchpad to interact with the [MKE CLI](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/user-access.html#cli-access).
 
 `launchpad client-config`
 
@@ -50,7 +46,7 @@ The supported options are:
 **Note:** The configuration must include the MKE credentials, example:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/mke/v1.1
+apiVersion: launchpad.mirantis.com/mke/v1.3
 kind: mke
 spec:
   mke:
@@ -68,10 +64,6 @@ The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
 * `--force` - Required when running non-interactively (default: `false`)
-* `--disable-redact` - Do not hide sensitive information in the output
-(default: `false`)
-* `--confirm` - Request confirmation for every command to be run on the remote hosts
-(default: `false`)
 
 ## Execute a command or run a remote terminal on a host
 
@@ -95,10 +87,6 @@ The supported options are:
 The supported options are:
 
 * `--config` - Path to a cluster config file, including the filename (default: `launchpad.yaml`, read from stdin: `-`)
-* `--disable-redact` - Do not hide sensitive information in the output
-(default: `false`)
-* `--confirm` - Request confirmation for every command to be run on the remote hosts
-(default: `false`)
 * `[report name]` - Currently supported reports: `config`, `hosts`, `mke`, `msr`
 
 ## Register
@@ -112,6 +100,7 @@ The supported options are:
 * `--name` - Name
 * `--email` - Email
 * `--company` - Company
+* `--accept-license` - Accept the [end user license agreement](https://github.com/Mirantis/launchpad/blob/master/LICENSE)
 
 
 ## Generate shell auto-completions

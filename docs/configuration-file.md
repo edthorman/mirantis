@@ -4,25 +4,24 @@ Mirantis Launchpad cluster configuration is described in YAML format. You can cr
 
 ## Configuration File Reference
 
-The complete `launchpad.yaml` file looks something like this, but with values determined by your specific configuration.
+An example `launchpad.yaml` file utilizing every possible configuration option.
 
 ```yaml
-apiVersion: launchpad.mirantis.com/mke/v1.1
+apiVersion: launchpad.mirantis.com/mke/v1.3
 kind: mke+msr
 metadata:
   name: launchpad-mke
 spec:
   hosts:
-  - address: 10.0.0.1
-    role: manager
+  - role: manager
     hooks:
       apply:
         before:
           - ls -al > test.txt
         after:
           - cat test.txt
-          - rm test.txt
     ssh:
+      address: 10.0.0.1
       user: root
       port: 22
       keyPath: ~/.ssh/id_rsa
@@ -30,14 +29,14 @@ spec:
     environment:
       http_proxy: http://example.com
       NO_PROXY: 10.0.0.*
-    engineConfig:
+    mcrConfig:
       debug: true
       log-opts:
         max-size: 10m
         max-file: "3"
-  - address: 10.0.0.2
-    role: worker
+  - role: worker
     winRM:
+      address: 10.0.0.2
       user: Administrator
       password: abcd1234
       port: 5986
@@ -47,19 +46,19 @@ spec:
       caCertPath: ~/.certs/cacert.pem
       certPath: ~/.certs/cert.pem
       keyPath: ~/.certs/key.pem
-  - address: 10.0.0.3
-    role: msr
-    imageDir: ./dtr-images
+  - role: msr
+    imageDir: ./msr-images
     ssh:
+      address: 10.0.0.3
       user: root
       port: 22
       keyPath: ~/.ssh/id_rsa
-  - address: 127.0.0.1
-    role: worker
-    localhost: true
+  - role: worker
+    localhost:
+      enabled: true
   mke:
-    version: "3.3.3"
-    imageRepo: "docker.io/docker"
+    version: "3.3.7"
+    imageRepo: "docker.io/mirantis"
     adminUsername: admin
     adminPassword: "$MKE_ADMIN_PASSWORD"
     installFlags:
@@ -76,14 +75,14 @@ spec:
         [Global]
         region=RegionOne
   msr:
-    version: 2.8.1
-    imageRepo: "docker.io/docker"
+    version: 2.8.5
+    imageRepo: "docker.io/mirantis"
     installFlags:
     - --dtr-external-url dtr.example.com
     - --ucp-insecure-tls
     replicaIDs: sequential
-  engine:
-    version: "19.03.8"
+  mcr:
+    version: "20.10.0"
     channel: stable
     repoURL: https://repos.mirantis.com
     installURLLinux: https://get.mirantis.com/
@@ -99,7 +98,7 @@ We follow Kubernetes-like versioning and grouping in launchpad configuration so 
 When reading the configuration file, launchpad will replace any strings starting with a dollar sign with values from the local host's environment variables. Example:
 
 ```yaml
-apiVersion: launchpad.mirantis.com/mke/v1.1
+apiVersion: launchpad.mirantis.com/mke/v1.3
 kind: mke
 spec:
   mke:
@@ -122,7 +121,7 @@ $$var | Escape expressions. Result will be $var.
 
 ## `apiVersion`
 
-The latest API version is `launchpad.mirantis.com/mke/v1.1`, but earlier configuration file versions should still work without changes if you do not intend to use any of the added features of the current version.
+The latest API version is `launchpad.mirantis.com/mke/v1.3`, but earlier configuration file versions should still work without changes if you do not intend to use any of the added features of the current version.
 
 ## `kind`
 
@@ -141,7 +140,6 @@ The specification for the cluster.
 
 The machines that the cluster runs on.
 
-- `address` - Address of the server that `launchpad` can connect to using the selected [connection](#host-connection-options) method
 - `privateInterface` - Private network address for the configured network
 interface (default: `eth0`)
 - `role` - Role of the machine in the cluster. Possible values are:
@@ -149,7 +147,7 @@ interface (default: `eth0`)
    - `worker`
    - `msr`
 - `environment` - Key - value pairs in YAML mapping syntax. Values are updated to host environment (optional)
-- `engineConfig` - Docker Engine configuration in YAML mapping syntax, will be converted to `daemon.json` (optional)
+- `mcrConfig` - Mirantis Container Runtime configuration in YAML mapping syntax, will be converted to `daemon.json` (optional)
 - `hooks` - [Hooks](#hooks) configuration for running commands before or after stages (optional)
 - `imageDir` - Path to a directory containing `.tar`/`.tar.gz` files produced by `docker save`. The images from that directory will be uploaded and `docker load` is used to load them.
 
@@ -157,12 +155,13 @@ interface (default: `eth0`)
 
 - `ssh` - [SSH](#ssh) Secure Shell (SSH) connection configuration options
 - `winRM` - [WinRM](#winrm) Windows Remote Management (WinRM) connection configuration options
-- `localhost` - Target is the local host where launchpad is running (boolean, default: false)
+- `localhost` - [Localhost)(#localhost) Target is the local host where launchpad is running
 
 ##### `ssh`
 
 SSH configuration options.
 
+- `address` - SSH connection address
 - `user` - User to log in as (default: `root`)
 - `port` - Host's ssh port (default: `22`)
 - `keyPath` - A local file path to an ssh private key file (default `~/.ssh/id_rsa`)
@@ -171,6 +170,7 @@ SSH configuration options.
 
 WinRM configuration options.
 
+- `address` - WinRM connection address
 - `user` - Windows account username (default: `Administrator`)
 - `password` - User account password
 - `port` - Host's WinRM listening port (default: `5986`)
@@ -180,6 +180,12 @@ WinRM configuration options.
 - `caCertPath` - Path to CA Certificate file (optional)
 - `certPath` - Path to Certificate file (optional)
 - `keyPath` - Path to Key file (optional)
+
+##### `localhost`
+
+Localhost connection configuration options.
+
+- `enabled` - Must be set to `true` to enable.
 
 #### Hooks configuration options
 
@@ -200,17 +206,20 @@ Host hooks can be used to have launchpad run commands on the host before or afte
 
 ### `mke`
 
-Specify options for the MKE cluster itself.
+Specify options for the MKE cluster.
 
-- `version` - Which version of MKE we should install or upgrade to (default `3.3.3`)
-- `imageRepo` - Which image repository we should use for MKE installation (default `docker.io/docker`)
+- `version` - Which version of MKE we should install or upgrade to (default `3.3.7`)
+- `imageRepo` - Which image repository we should use for MKE installation (default `docker.io/mirantis`)
 - `adminUsername` - MKE administrator username (default: `admin`)
 - `adminPassword`- MKE administrator password (default: auto-generate)
-- `installFlags` - Custom installation flags for MKE installation. You can get a list of supported installation options for a specific MKE version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.0 install --help`. (optional)
+- `installFlags` - Custom installation flags for MKE installation.
+- `upgradeFlags`- Custom upgrade flags for an MKE upgrade. You can get a list of supported installation options for a specific MKE version by running the installer container with `docker run -t -i --rm docker/ucp:3.3.7 upgrade --help`. (optional)
 - `licenseFilePath` - Optional. A path to Docker Enterprise license file.
-- `configFile` - Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html).
-- `configData` -  Optional. The initial full cluster [configuration file](https://docs.mirantis.com/docker-enterprise/v3.1/dockeree-products/ucp/ucp-configure/ucp-configuration-file.html) in embedded "heredocs" way. Heredocs allows you to define a mulitiline string while maintaining the original formatting and indenting
+- `configFile` - Optional. The initial full cluster [configuration file](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/mke-configure/mke-configuration-file.html).
+- `configData` -  Optional. The initial full cluster [configuration file](https://docs.mirantis.com/containers/v3.1/dockeree-products/mke/mke-configure/mke-configuration-file.html) in embedded "heredocs" syntax. Heredocs allows you to define a mulitiline string while maintaining the original formatting and indenting
 - `cloud` - Optional. Cloud provider configuration
+- `swarmInstallFlags` - Custom flags for Swarm initialization (optional)
+- `swarmUpdateCommands` - Custom commands to run after the Swarm initialization (optional)
 
 **Note:** The MKE installer will automatically generate an administrator password unless provided and it will be displayed in clear text in the output and persisted in the logs. The automatically generated password must be configured in the `launchpad.yaml` for any subsequent runs or they will fail.
 
@@ -226,32 +235,33 @@ Cloud provider configuration.
 
 Specify options for the MSR cluster.
 
-- `version` - Which version of MSR we should install or upgrade to (default `2.8.3`)
+- `version` - Which version of MSR we should install or upgrade to (default `2.8.5`)
 - `imageRepo` - Which image repository we should use for MSR installation (default `docker.io/mirantis`)
-- `installFlags` - Custom installation flags for MSR installation.  You can get a list of supported installation options for a specific MSR version by running the installer container with `docker run -t -i --rm mirantis/dtr:2.8.3 install --help`. (optional)
+- `installFlags` - Custom installation flags for MSR installation.  You can get a list of supported installation options for a specific MSR version by running the installer container with `docker run -t -i --rm mirantis/dtr:2.8.5 install --help`. (optional)
 
     **Note**: `launchpad` will inherit the MKE flags which are needed by MSR to perform installation, joining and removal of nodes.  There's no need to include the following install flags in the `installFlags` section of `msr`:
     - `--ucp-username` (inherited from MKE's `--admin-username` flag or `spec.mke.adminUsername`)
     - `--ucp-password` (inherited from MKE's `--admin-password` flag or `spec.mke.adminPassword`)
     - `--ucp-url` (inherited from MKE's `--san` flag or intelligently selected based on other configuration variables)
 
+- `upgradeFlags`- Custom upgrade flags for an MSR upgrade. You can get a list of supported installation options for a specific MSR version by running the installer container with `docker run -t -i --rm docker/dtr:2.8.5 upgrade --help`. (optional)
 - `replicaIDs` - Set to `sequential` to generate sequential replica id's for cluster members, for example `000000000001`, `000000000002`, etc. (default: `random`)
 
-### `engine`
+### `mcr`
 
- Specify options for Docker Engine - Enterprise to be installed
+Specify options for the Mirantis Container Runtime.
 
-- `version` - The version of engine that you want to install or upgraded to. (default `19.03.12`)
+- `version` - The version of MCR you want to install or upgraded to. (default `20.10.0`)
 - `channel` - Installation channel to use. One of `test` or `prod` (optional)
-- `repoURL` - Repository URL to use for engine installation. (optional)
+- `repoURL` - Repository URL to use for MCR installation. (optional)
 - `installURLLinux` - Where to download the initial installer script for linux hosts. Local paths can also be used. (default: `https://get.mirantis.com/`)
 - `installURLWindows` - Where to download the initial installer script for windows hosts. Also local paths can be used. (default: `https://get.mirantis.com/install.ps1`)
 
-    **Note:** In most scenarios, you should not need to specify `repoUrl` and `installURLLinux/Windows`, which are only usually used when installing from a non-standard location like a disconnected datacenter.
+**Note:** In most scenarios, you should not need to specify `repoUrl` and `installURLLinux/Windows`, which are only usually used when installing from a non-standard location like a disconnected datacenter.
 
 ### `cluster`
 
- Specify options not specific to any of the individual components.
+Specify options not specific to any of the individual components.
 
 - `prune` - Set to `true` to remove nodes that are known by the cluster but not listed in the `launchpad.yaml`.
 
