@@ -3,7 +3,15 @@ variable "cluster_name" {
 }
 
 variable "aws_region" {
-  default = "eu-north-1"
+  default = "eu-central-1"
+}
+
+variable "aws_shared_credentials_file" {
+  default = "~/.aws/credentials"
+}
+
+variable "aws_profile" {
+  default = "kaas"
 }
 
 variable "vpc_cidr" {
@@ -11,7 +19,7 @@ variable "vpc_cidr" {
 }
 
 variable "admin_password" {
-  default = "orcaorcaorca"
+  default = "dockeradmin"
 }
 
 
@@ -44,4 +52,5 @@ variable "worker_volume_size" {
 }
 
 variable "windows_administrator_password" {
+  default = "w!ndozePassw0rd"
 }
