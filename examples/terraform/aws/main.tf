@@ -29,6 +29,19 @@ module "masters" {
   instance_profile_name = module.common.instance_profile_name
 }
 
+module "msrs" {
+  source                = "./modules/msr"
+  msr_count             = var.msr_count
+  vpc_id                = module.vpc.id
+  cluster_name          = var.cluster_name
+  subnet_ids            = module.vpc.public_subnet_ids
+  security_group_id     = module.common.security_group_id
+  image_id              = module.common.image_id
+  kube_cluster_tag      = module.common.kube_cluster_tag
+  ssh_key               = var.cluster_name
+  instance_profile_name = module.common.instance_profile_name
+}
+
 module "workers" {
   source                = "./modules/worker"
   worker_count          = var.worker_count
@@ -60,6 +73,17 @@ module "windows_workers" {
 locals {
   managers = [
     for host in module.masters.machines : {
+      address = host.public_ip
+      ssh = {
+        user    = "ubuntu"
+        keyPath = "./ssh_keys/${var.cluster_name}.pem"
+      }
+      role             = host.tags["Role"]
+      privateInterface = "ens5"
+    }
+  ]
+  msrs = [
+    for host in module.msrs.machines : {
       address = host.public_ip
       ssh = {
         user    = "ubuntu"
@@ -105,7 +129,7 @@ locals {
           "--san=${module.masters.lb_dns_name}",
         ]
       }
-      hosts = concat(local.managers, local.workers, local.windows_workers)
+      hosts = concat(local.managers, local.msrs, local.workers, local.windows_workers)
     }
   }
 }
