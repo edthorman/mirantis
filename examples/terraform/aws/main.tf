@@ -117,7 +117,7 @@ locals {
       privateInterface = "Ethernet 2"
     }
   ]
-  launchpad_tmpl = {
+  mke_launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/mke/v1.1"
     kind       = "mke"
     spec = {
@@ -129,10 +129,37 @@ locals {
           "--san=${module.masters.lb_dns_name}",
         ]
       }
+      msr = {}
       hosts = concat(local.managers, local.msrs, local.workers, local.windows_workers)
     }
   }
+
+
+  msr_launchpad_tmpl = {
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke+msr"
+    spec = {
+      mke = {
+        adminUsername = "admin"
+        adminPassword = var.admin_password
+        installFlags : [
+          "--default-node-orchestrator=kubernetes",
+          "--san=${module.masters.lb_dns_name}",
+        ]
+      }
+      msr = {
+        installFlags : [
+          "--ucp-insecure-tls",
+          "--dtr-external-url ${module.msrs.lb_dns_name}",
+        ]
+        }
+    hosts = concat(local.managers, local.msrs, local.workers, local.windows_workers)
+    }
+  }
+
+  launchpad_tmpl = var.msr_count > 0 ? local.msr_launchpad_tmpl : local.mke_launchpad_tmpl
 }
+
 
 output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
