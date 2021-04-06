@@ -1,5 +1,7 @@
 provider "aws" {
   region = var.aws_region
+  shared_credentials_file = var.aws_shared_credentials_file
+  profile = var.aws_profile
 }
 
 module "vpc" {
@@ -17,6 +19,19 @@ module "common" {
 module "masters" {
   source                = "./modules/master"
   master_count          = var.master_count
+  vpc_id                = module.vpc.id
+  cluster_name          = var.cluster_name
+  subnet_ids            = module.vpc.public_subnet_ids
+  security_group_id     = module.common.security_group_id
+  image_id              = module.common.image_id
+  kube_cluster_tag      = module.common.kube_cluster_tag
+  ssh_key               = var.cluster_name
+  instance_profile_name = module.common.instance_profile_name
+}
+
+module "msrs" {
+  source                = "./modules/msr"
+  msr_count             = var.msr_count
   vpc_id                = module.vpc.id
   cluster_name          = var.cluster_name
   subnet_ids            = module.vpc.public_subnet_ids
@@ -67,6 +82,17 @@ locals {
       privateInterface = "ens5"
     }
   ]
+  msrs = [
+    for host in module.msrs.machines : {
+      address = host.public_ip
+      ssh = {
+        user    = "ubuntu"
+        keyPath = "./ssh_keys/${var.cluster_name}.pem"
+      }
+      role             = host.tags["Role"]
+      privateInterface = "ens5"
+    }
+  ]
   workers = [
     for host in module.workers.machines : {
       ssh = {
@@ -91,7 +117,7 @@ locals {
       privateInterface = "Ethernet 2"
     }
   ]
-  launchpad_tmpl = {
+  mke_launchpad_tmpl = {
     apiVersion = "launchpad.mirantis.com/mke/v1.1"
     kind       = "mke"
     spec = {
@@ -103,10 +129,37 @@ locals {
           "--san=${module.masters.lb_dns_name}",
         ]
       }
-      hosts = concat(local.managers, local.workers, local.windows_workers)
+      msr = {}
+      hosts = concat(local.managers, local.msrs, local.workers, local.windows_workers)
     }
   }
+
+
+  msr_launchpad_tmpl = {
+    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    kind       = "mke+msr"
+    spec = {
+      mke = {
+        adminUsername = "admin"
+        adminPassword = var.admin_password
+        installFlags : [
+          "--default-node-orchestrator=kubernetes",
+          "--san=${module.masters.lb_dns_name}",
+        ]
+      }
+      msr = {
+        installFlags : [
+          "--ucp-insecure-tls",
+          "--dtr-external-url ${module.msrs.lb_dns_name}",
+        ]
+        }
+    hosts = concat(local.managers, local.msrs, local.workers, local.windows_workers)
+    }
+  }
+
+  launchpad_tmpl = var.msr_count > 0 ? local.msr_launchpad_tmpl : local.mke_launchpad_tmpl
 }
+
 
 output "mke_cluster" {
   value = yamlencode(local.launchpad_tmpl)
