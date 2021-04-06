@@ -84,8 +84,8 @@ locals {
   ]
   msrs = [
     for host in module.msrs.machines : {
-      address = host.public_ip
       ssh = {
+        address = host.public_ip
         user    = "ubuntu"
         keyPath = "./ssh_keys/${var.cluster_name}.pem"
       }
@@ -118,7 +118,7 @@ locals {
     }
   ]
   mke_launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    apiVersion = "launchpad.mirantis.com/mke/v1.3"
     kind       = "mke"
     spec = {
       mke = {
@@ -136,7 +136,7 @@ locals {
 
 
   msr_launchpad_tmpl = {
-    apiVersion = "launchpad.mirantis.com/mke/v1.1"
+    apiVersion = "launchpad.mirantis.com/mke/v1.3"
     kind       = "mke+msr"
     spec = {
       mke = {
