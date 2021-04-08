@@ -1,6 +1,16 @@
 #!/usr/bin/env sh
 
+# Check if file exist terraform.tfvars
+if [ ! -f ./terraform.tfvars ]; then
+    echo "File terraform.tfvars not found!"
+    echo "Please create one from terraform.tfvars.example!"
+    exit 2
+fi
+terraform init
 terraform apply -auto-approve
-mv -i ./launchpad.new.yaml ./launchpad.$(date +"%Y-%m-%d_%H-%M").yaml
-# terraform output mke_cluster | sed '1d;$d' > ./launchpad.yaml
-terraform output -json | yq e -P '.mke_cluster.value' - > ./launchpad.yaml && launchpad describe config > ./launchpad.new.yaml
+mv -i ./launchpad.yaml ./launchpad.$(date +"%Y-%m-%d_%H-%M").yaml
+terraform output --raw mke_cluster > ./launchpad.yaml 
+echo "Your launchpad.yaml sample is stored in your current directory" && ls ./launchpad.yaml
+echo "Apply your configuration via launchpad apply"
+
+exit 0
