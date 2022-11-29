@@ -1,5 +1,5 @@
 variable "project_id" {
-  default = "mkeongcp"
+  default = "orchestration-348616"
 }
 
 variable "cluster_name" {
