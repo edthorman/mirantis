@@ -120,6 +120,7 @@ locals {
     }
     spec = {
       mke = {
+        version       = var.mke_version
         adminUsername = "admin"
         adminPassword = var.admin_password
         installFlags : [

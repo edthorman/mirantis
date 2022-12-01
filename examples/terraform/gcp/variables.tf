@@ -84,5 +84,5 @@ variable "windows_password" {
 }
 
 variable "mke_version" {
-  default = "3.5.2"
+  default = "3.5.5"
 }
