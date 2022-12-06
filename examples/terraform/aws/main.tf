@@ -23,6 +23,8 @@ module "masters" {
   cluster_name          = var.cluster_name
   subnet_ids            = module.vpc.public_subnet_ids
   security_group_id     = module.common.security_group_id
+  master_type           = var.master_type
+  master_volume_size    = var.master_volume_size
   image_id              = module.common.image_id
   kube_cluster_tag      = module.common.kube_cluster_tag
   ssh_key               = var.cluster_name
@@ -37,6 +39,8 @@ module "msrs" {
   subnet_ids            = module.vpc.public_subnet_ids
   security_group_id     = module.common.security_group_id
   image_id              = module.common.image_id
+  msr_type              = var.msr_type
+  msr_volume_size       = var.msr_volume_size
   kube_cluster_tag      = module.common.kube_cluster_tag
   ssh_key               = var.cluster_name
   instance_profile_name = module.common.instance_profile_name
@@ -50,10 +54,11 @@ module "workers" {
   subnet_ids            = module.vpc.public_subnet_ids
   security_group_id     = module.common.security_group_id
   image_id              = module.common.image_id
+  worker_type           = var.worker_type
+  worker_volume_size    = var.worker_volume_size
   kube_cluster_tag      = module.common.kube_cluster_tag
   ssh_key               = var.cluster_name
   instance_profile_name = module.common.instance_profile_name
-  worker_type           = var.worker_type
 }
 
 module "windows_workers" {
@@ -64,9 +69,10 @@ module "windows_workers" {
   subnet_ids                     = module.vpc.public_subnet_ids
   security_group_id              = module.common.security_group_id
   image_id                       = module.common.windows_2019_image_id
+  worker_type                    = var.worker_type
+  worker_volume_size             = var.worker_volume_size
   kube_cluster_tag               = module.common.kube_cluster_tag
   instance_profile_name          = module.common.instance_profile_name
-  worker_type                    = var.worker_type
   windows_administrator_password = var.windows_administrator_password
 }
 
